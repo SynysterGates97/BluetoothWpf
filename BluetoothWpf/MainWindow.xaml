@@ -7,10 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="listBox">
-            <ListBox x:Name="listBox1_btDevices" Height="227" Width="274"/>
-            <Button x:Name="button_Rescan" Content="Запустить сканирование" Click="button_Click" Width="272"/>
-        </ListBox>
+        <ListBox x:Name="listBox1_btDevices" Margin="10,10,10,177"/>
+        <Button x:Name="button_Rescan" Content="Запустить сканирование" Click="button_Click" Margin="264,0,264,139" Height="21" VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>

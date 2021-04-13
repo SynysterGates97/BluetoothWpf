@@ -33,6 +33,8 @@ namespace BluetoothWpf
         BluetoothComponent localComponent = new BluetoothComponent(localClient);
         // async methods, can be done synchronously too
 
+        List<BluetoothDeviceInfo> bluetoothDeviceInfos = new List<BluetoothDeviceInfo>();
+             
         public MainWindow()
         {
             localComponent.DiscoverDevicesProgress += new EventHandler<DiscoverDevicesEventArgs>(component_DiscoverDevicesProgress);
@@ -56,6 +58,7 @@ namespace BluetoothWpf
                     {
                         listBox1_btDevices.Items.Add(e.Devices[i].DeviceName + " (" + e.Devices[i].DeviceAddress + "): Device is unknown");
                     }
+
                 }
             }
             catch(Exception ex)
@@ -73,7 +76,7 @@ namespace BluetoothWpf
         private void button_Click(object sender, RoutedEventArgs e)
         {
             listBox1_btDevices.Items.Clear();
-            localComponent.DiscoverDevicesAsync(10, true, true, true, true, null);
+            localComponent.DiscoverDevicesAsync(255, true, true, true, true, null);
         }
     }
 }

@@ -24,6 +24,20 @@ namespace BluetoothWpf
     /// </summary>
     public partial class MainWindow : Window
     {
+        //todo:
+        //Вывнести в класс LbLoger, при вынесении класса Bluetooth
+        private string GetDateWithLogFormat()
+        {
+            string logString = String.Format("[{0:s}]: ", DateTime.Now.ToString());
+            return logString;
+        }
+
+        public void Print(string message)
+        {
+            string logString = GetDateWithLogFormat() + message;
+            listBox1_btDevices.Items.Add(logString);
+            listBox1_btDevices.ItemsSource = listBox1_btDevices.ItemsSource;
+        }
         static BluetoothAddress bluetoothClientAddr = new BluetoothAddress(0);
 
         static BluetoothEndPoint btEndpoint = new BluetoothEndPoint(bluetoothClientAddr, BluetoothService.SerialPort);
@@ -34,14 +48,21 @@ namespace BluetoothWpf
         // async methods, can be done synchronously too
 
         List<BluetoothDeviceInfo> bluetoothDeviceInfos = new List<BluetoothDeviceInfo>();
-             
+
+        BluetoothDeviceInfo necomimmiDevice;
+        void  FindNecomimmiDevice()
+        {
+            
+            throw new NotImplementedException();
+        }
         public MainWindow()
         {
             localComponent.DiscoverDevicesProgress += new EventHandler<DiscoverDevicesEventArgs>(component_DiscoverDevicesProgress);
             localComponent.DiscoverDevicesComplete += new EventHandler<DiscoverDevicesEventArgs>(component_DiscoverDevicesComplete);
             InitializeComponent();
         }
-       
+        const long necomimmiDeviceAddressLong = 0x98D332312290;
+        //const BluetoothAddress necomimmiDeviceAddress = 0x98D332312290;
 
         private void component_DiscoverDevicesProgress(object sender, DiscoverDevicesEventArgs e)
         {
@@ -50,13 +71,12 @@ namespace BluetoothWpf
                 // log and save all found devices
                 for (int i = 0; i < e.Devices.Length; i++)
                 {
-                    if (e.Devices[i].Remembered)
+                    var btDevice = e.Devices[i];
+                    Print($"FOUND: {btDevice.DeviceName} {{{btDevice.DeviceAddress}}}");
+                    bluetoothDeviceInfos.Add(e.Devices[i]);
+                    if (e.Devices[i].DeviceAddress.ToInt64() == necomimmiDeviceAddressLong)
                     {
-                        listBox1_btDevices.Items.Add(e.Devices[i].DeviceName + " (" + e.Devices[i].DeviceAddress + "): Device is known");
-                    }
-                    else
-                    {
-                        listBox1_btDevices.Items.Add(e.Devices[i].DeviceName + " (" + e.Devices[i].DeviceAddress + "): Device is unknown");
+                        necomimmiDevice = e.Devices[i];
                     }
 
                 }
@@ -69,14 +89,28 @@ namespace BluetoothWpf
 
         private void component_DiscoverDevicesComplete(object sender, DiscoverDevicesEventArgs e)
         {
-            listBox1_btDevices.Items.Add("SCAN_COMPLETED");
+            if (necomimmiDevice == null)
+            {
+                localComponent.DiscoverDevicesAsync(255, true, true, true, true, null);
+
+                return;
+            }
+            else 
+            {
+                Print("Necomimmi device is found " + necomimmiDevice.DeviceName);
+                
+            }
+
+            
             // log some stuff
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            listBox1_btDevices.Items.Clear();
+            Print("Bt scan initiated");
             localComponent.DiscoverDevicesAsync(255, true, true, true, true, null);
+           // listBox1_btDevices.Items.Clear(); //DeviceAddress = { 98D332312290}
+            
         }
     }
 }

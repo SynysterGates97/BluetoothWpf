@@ -117,20 +117,23 @@ namespace BluetoothWpf
         {
             if(necomimmiDevice == null)
             {
-                Print("Сначала нужно найти энцефалограф");
+                Print("Сначала нужно найти энцефалограф!!!!");
+                return;
             }
             BluetoothDeviceInfo[] pairedDevicesList = localClient.DiscoverDevices(255, false, true, false, false);
 
 
-            foreach (BluetoothDeviceInfo device in pairedDevicesList)
-            {
                 bool isPaired = false;
-                for (int i = 0; i < pairedDevicesList.Length; i++)
+                foreach (BluetoothDeviceInfo device in pairedDevicesList)
                 {
-                    if (device.Equals(necomimmiDevice))
+                    
+                    for (int i = 0; i < pairedDevicesList.Length; i++)
                     {
-                        isPaired = true;
-                        break;
+                        if (device.Equals(necomimmiDevice))
+                        {
+                            isPaired = true;
+                            break;
+                        }
                     }
                 }
 
@@ -138,7 +141,7 @@ namespace BluetoothWpf
                 if (!isPaired)
                 {
                     // replace DEVICE_PIN here, synchronous method, but fast
-                    isPaired = BluetoothSecurity.PairRequest(necomimmiDevice.DeviceAddress, "1234");
+                    isPaired = BluetoothSecurity.PairRequest(necomimmiDevice.DeviceAddress, "666");
                     if (isPaired)
                     {
                         Print("Сопряжено");
@@ -154,7 +157,6 @@ namespace BluetoothWpf
                 {
                     Print("Было сопряжено ранее");
                 }
-            }
         }
     }
 }

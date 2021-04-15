@@ -9,6 +9,7 @@
     <Grid>
         <ListBox x:Name="listBox1_btDevices" Margin="10,10,10,177"/>
         <Button x:Name="button_Rescan" Content="Запустить сканирование" Click="button_Click" Margin="264,0,264,139" Height="21" VerticalAlignment="Bottom"/>
+        <Button x:Name="button_pair" Content="Сопрячь" HorizontalAlignment="Center" Margin="0,319,0,0" VerticalAlignment="Top" Width="272" Click="button_pair_Click"/>
 
     </Grid>
 </Window>

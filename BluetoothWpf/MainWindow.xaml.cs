@@ -112,5 +112,49 @@ namespace BluetoothWpf
            // listBox1_btDevices.Items.Clear(); //DeviceAddress = { 98D332312290}
             
         }
+
+        private void button_pair_Click(object sender, RoutedEventArgs e)
+        {
+            if(necomimmiDevice == null)
+            {
+                Print("Сначала нужно найти энцефалограф");
+            }
+            BluetoothDeviceInfo[] pairedDevicesList = localClient.DiscoverDevices(255, false, true, false, false);
+
+
+            foreach (BluetoothDeviceInfo device in pairedDevicesList)
+            {
+                bool isPaired = false;
+                for (int i = 0; i < pairedDevicesList.Length; i++)
+                {
+                    if (device.Equals(necomimmiDevice))
+                    {
+                        isPaired = true;
+                        break;
+                    }
+                }
+
+                // if the device is not paired, pair it!
+                if (!isPaired)
+                {
+                    // replace DEVICE_PIN here, synchronous method, but fast
+                    isPaired = BluetoothSecurity.PairRequest(necomimmiDevice.DeviceAddress, "1234");
+                    if (isPaired)
+                    {
+                        Print("Сопряжено");
+                        // now it is paired
+                    }
+                    else
+                    {
+                        Print("Не сопряжено");
+                        // pairing failed
+                    }
+                }
+                else
+                {
+                    Print("Было сопряжено ранее");
+                }
+            }
+        }
     }
 }

@@ -178,5 +178,28 @@ namespace BluetoothWpf
                 localClient.BeginConnect(necomimmiDevice.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(Connect), necomimmiDevice);
             }
         }
+
+        void AcceptConnection(IAsyncResult result)
+        {
+            if (result.IsCompleted)
+            {
+                BluetoothClient remoteDevice = ((BluetoothListener)result.AsyncState).EndAcceptBluetoothClient(result);
+            }
+        }
+
+        private void button_receive_Click(object sender, RoutedEventArgs e)
+        {
+            if(localClient.Connected)
+            {
+                var btStream = localClient.GetStream();
+                int counter = 0;
+                while (btStream.DataAvailable)
+                {
+                    int readByte = btStream.ReadByte();
+                    Print(String.Format("{0}->{1,10:X} ", counter, readByte));
+                    counter++;
+                }
+            }    
+        }
     }
 }

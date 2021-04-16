@@ -11,6 +11,7 @@
         <Button x:Name="button_Rescan" Content="Запустить сканирование" Click="button_Click" Margin="264,0,264,139" Height="21" VerticalAlignment="Bottom"/>
         <Button x:Name="button_pair" Content="Сопрячь" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" Width="272" Click="button_pair_Click"/>
         <Button x:Name="button_connect" Content="Соединиться" HorizontalAlignment="Center" Margin="0,325,0,0" VerticalAlignment="Top" Width="272" Click="button_connect_Click" />
+        <Button x:Name="button_receive" Content="Получить" HorizontalAlignment="Center" Margin="0,350,0,0" VerticalAlignment="Top" Width="272" Click="button_receive_Click" />
 
     </Grid>
 </Window>

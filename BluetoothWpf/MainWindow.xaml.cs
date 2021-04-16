@@ -113,6 +113,7 @@ namespace BluetoothWpf
             
         }
 
+        const string pinCode = "666";
         private void button_pair_Click(object sender, RoutedEventArgs e)
         {
             if(necomimmiDevice == null)
@@ -141,7 +142,7 @@ namespace BluetoothWpf
                 if (!isPaired)
                 {
                     // replace DEVICE_PIN here, synchronous method, but fast
-                    isPaired = BluetoothSecurity.PairRequest(necomimmiDevice.DeviceAddress, "666");
+                    isPaired = BluetoothSecurity.PairRequest(necomimmiDevice.DeviceAddress, pinCode);
                     if (isPaired)
                     {
                         Print("Сопряжено");
@@ -157,6 +158,25 @@ namespace BluetoothWpf
                 {
                     Print("Было сопряжено ранее");
                 }
+        }
+
+        private void Connect(IAsyncResult result)
+        {
+            if (result.IsCompleted)
+            {
+                MessageBox.Show("Test");
+                // client is connected now :)
+            }
+        }
+        private void button_connect_Click(object sender, RoutedEventArgs e)
+        {
+            if (necomimmiDevice != null && necomimmiDevice.Authenticated)
+            {
+                // set pin of device to connect with
+                localClient.SetPin(pinCode);
+                // async connection method
+                localClient.BeginConnect(necomimmiDevice.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(Connect), necomimmiDevice);
+            }
         }
     }
 }

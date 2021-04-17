@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Windows;
 using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
@@ -27,6 +28,7 @@ namespace BluetoothWpf
 
         private BluetoothDeviceInfo _necomimmiDevice;
         const long _necomimmiDeviceAddressLong = 0x98D332312290;
+        const string _pinCode = "666";
 
         LbLoger _LbLoger;
 
@@ -116,7 +118,6 @@ namespace BluetoothWpf
             else
             {
                 _LbLoger.Print($"Энецефалограф найден {_necomimmiDevice.DeviceName}, сканирование остановлено");
-
             }
         }
         
@@ -128,14 +129,83 @@ namespace BluetoothWpf
 
         public void PairNecomimiDevice()
         {
+            
+            if (_necomimmiDevice == null)
+            {
+                _LbLoger.Print("Сначала нужно найти энцефалограф!!!!");
+                return;
+            }
+            BluetoothDeviceInfo[] pairedDevicesList = _localClient.DiscoverDevices(255, false, true, false, false);
 
-            throw new NotImplementedException();
+            bool isPaired = false;
+            foreach (BluetoothDeviceInfo device in pairedDevicesList)
+            {
+
+                for (int i = 0; i < pairedDevicesList.Length; i++)
+                {
+                    if (device.Equals(_necomimmiDevice))
+                    {
+                        isPaired = true;
+                        break;
+                    }
+                }
+            }
+
+            // if the device is not paired, pair it!
+            if (!isPaired)
+            {
+                // replace DEVICE_PIN here, synchronous method, but fast
+                isPaired = BluetoothSecurity.PairRequest(_necomimmiDevice.DeviceAddress, _pinCode);
+                if (isPaired)
+                {
+                    isPaired = true;
+                    _LbLoger.Print("Сопряжение с энцефалографом прошло успешно");
+                    // now it is paired
+                }
+                else
+                {
+                    isPaired = false;
+                    _LbLoger.Print("Сопряжение с энцефалографом не удалось");
+                    // pairing failed
+                }
+            }
+            else
+            {
+                _LbLoger.Print("Было сопряжено ранее");
+            }
         }
 
-        public void Connect()
+        private void BtConnect(IAsyncResult result)
         {
+            if (result.IsCompleted)
+            {
+                //TODO:
+                // Для отладочных сообщений нужно сделать отдельный массив с сообщениями,
+                // Любой поток сможет добавлять туда свои сообщения со временем.
+                // А одна задача в UI будет выводить эти сообщения в listbox.
+                // Так получится логировать сообщения от функций, выполняющихся в других потоках.
+                
+                //это сообщение будет блокировать весь интерфейс при подключении
 
-            throw new NotImplementedException();
+                // пока можно будет обойтись флагом.
+                MessageBox.Show("Энцефалограф подключен");
+                _isNecomimiConnected = true;
+            }
+            else
+            {
+                _isNecomimiConnected = false;
+            }
+        }
+
+        public void ConnectToNecomimi()
+        {
+            if (_necomimmiDevice != null && _necomimmiDevice.Authenticated)
+            {
+                // set pin of device to connect with
+                _localClient.SetPin(_pinCode);
+                // async connection method
+                _localClient.BeginConnect(_necomimmiDevice.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(BtConnect), _necomimmiDevice);
+            }
         }
 
         public void Receive()

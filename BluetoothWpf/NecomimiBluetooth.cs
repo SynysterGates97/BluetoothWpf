@@ -112,7 +112,7 @@ namespace BluetoothWpf
             if (_necomimmiDevice == null)
             {
                 _localComponent.DiscoverDevicesAsync(255, true, true, true, true, null);
-
+                _LbLoger.Print($"Энецефалограф не найден продолжаем сканирование");
                 return;
             }
             else
@@ -210,15 +210,31 @@ namespace BluetoothWpf
 
         public void Receive()
         {
-
-            throw new NotImplementedException();
+            if (_localClient.Connected)
+            {
+                var btStream = _localClient.GetStream();
+                int counter = 0;
+                while (btStream.DataAvailable)
+                {
+                    int readByte = btStream.ReadByte();
+                    _LbLoger.Print(String.Format("{0}->{1,10:X} ", counter, readByte));
+                    counter++;
+                }
+            }
         }
 
         //Необходимо проверять с каким-то периодом не порвалось ли подключение
-        public void ControlNecomomiDeviceConnection()
+        public bool ControlNecomomiDeviceConnection()
         {
-            if()
-            throw new NotImplementedException();
+            if(!_localClient.Connected)
+            {
+
+                //TODO: Нужно сбросить все флаги ещё.
+                OnPropertyChanged("ControlNecomomiDeviceConnection");
+                return false;
+            }
+            return true;
+
         }
 
 

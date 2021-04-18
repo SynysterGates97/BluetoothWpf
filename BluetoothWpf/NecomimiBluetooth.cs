@@ -188,7 +188,7 @@ namespace BluetoothWpf
                 //это сообщение будет блокировать весь интерфейс при подключении
 
                 // пока можно будет обойтись флагом.
-                MessageBox.Show("Энцефалограф подключен");
+                _LbLoger.Print("Энцефалограф подключен");
                 _isNecomimiConnected = true;
             }
             else

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
@@ -27,18 +28,46 @@ namespace BluetoothWpf
     {
         NecomimiBluetooth _necomimiBluetooth;
         LbLoger _lbLoger;
-        void  FindNecomimmiDevice()
-        {
-            
-            throw new NotImplementedException();
-        }
+        private List<string> _listOfLogMessages;
+
+        DispatcherTimer _logUpdatetimer;
+       
         public MainWindow()
         {
             InitializeComponent();
-            _lbLoger = new LbLoger(ref listBox1_btDevices);
+            _listOfLogMessages = new List<string>();
+            _lbLoger = new LbLoger();
+            _logUpdatetimer = new DispatcherTimer();
+            _logUpdatetimer.Tick += new EventHandler(LogUpdateTimerCallback);
+            _logUpdatetimer.Interval = new TimeSpan(0, 0, 0, 0,100);
+            
+            _lbLoger.PropertyChanged += _lbLoger_PropertyChanged;
+           
             _necomimiBluetooth = new NecomimiBluetooth(ref _lbLoger);
         }
-       
+
+        private void LogUpdateTimerCallback(object sender, EventArgs e)
+        {
+            _listOfLogMessages.Clear();
+
+            _lbLoger.Flush(ref _listOfLogMessages);
+
+            if (_listOfLogMessages.Count > 0)
+            {
+                foreach (string logMessage in _listOfLogMessages)
+                {
+                    listBox1_btDevices.Items.Add(logMessage);
+                }
+            }
+            _logUpdatetimer.Stop();
+            // код здесь
+        }
+
+        private void _lbLoger_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+
+            _logUpdatetimer.Start();
+        }
 
         private void button_scan_Click(object sender, RoutedEventArgs e)
         {

@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+using System.ComponentModel;
+using System.Threading;
 
 
 
 namespace BluetoothWpf
 {
     //В дальнейшем можно создать поток логера - выводить логи в любой вывод
-    public class LbLoger
+    public class LbLoger : INotifyPropertyChanged
     {
-        private ListBox logerListBox;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public LbLoger(ref ListBox listBox)
+        private Mutex _queueMutex;
+
+        private Queue<string> _queueOfMessages;
+        public LbLoger()
         {
-            logerListBox = listBox;
+            _queueMutex = new Mutex();
+            _queueOfMessages = new Queue<string>();
         }
         private string GetDateWithLogFormat()
         {
@@ -25,9 +28,35 @@ namespace BluetoothWpf
 
         public void Print(string message)
         {
-            string logString = GetDateWithLogFormat() + message;
-            logerListBox.Items.Add(logString);
-            logerListBox.ItemsSource = logerListBox.ItemsSource;
+            _queueMutex.WaitOne();
+                _queueOfMessages.Enqueue(GetDateWithLogFormat() + message);
+                OnPropertyChanged("Print");
+            _queueMutex.ReleaseMutex();
+        }
+
+        //На вход подавать пустой список
+        public bool Flush(ref List<string> outputLogMessages)
+        {
+            if (_queueOfMessages.Count == 0)
+                return false;
+
+            while (_queueOfMessages.Count > 0)
+            {
+                _queueMutex.WaitOne(100);
+                    string outputLogString = _queueOfMessages.Dequeue();
+                _queueMutex.ReleaseMutex();
+
+                outputLogMessages.Add(outputLogString);
+            }
+
+            return true;
+
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+        protected void OnPropertyChanged(string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
     }

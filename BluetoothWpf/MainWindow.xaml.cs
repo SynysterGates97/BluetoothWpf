@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
+using MahApps.Metro.Controls;
 
 
 namespace BluetoothWpf
@@ -22,7 +23,7 @@ namespace BluetoothWpf
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         NecomimiBluetooth _necomimiBluetooth;
         LbLoger _lbLoger;

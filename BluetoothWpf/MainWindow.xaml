@@ -3,16 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:BluetoothWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="450" Width="800" WindowStyle="SingleBorderWindow">
+    <Grid Background="Azure">
         <ListBox x:Name="listBox1_btDevices" Margin="10,10,10,177"/>
         <Button x:Name="button_Rescan" Content="Запустить сканирование" Click="button_scan_Click" Margin="264,0,264,139" Height="21" VerticalAlignment="Bottom"/>
-        <Button x:Name="button_pair" Content="Сопрячь" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" Width="272" Click="button_pair_Click"/>
-        <Button x:Name="button_connect" Content="Соединиться" HorizontalAlignment="Center" Margin="0,325,0,0" VerticalAlignment="Top" Width="272" Click="button_connect_Click" />
-        <Button x:Name="button_receive" Content="Получить" HorizontalAlignment="Center" Margin="0,350,0,0" VerticalAlignment="Top" Width="272" Click="button_receive_Click" />
+        <Button x:Name="button_pair" Content="Сопрячь" Margin="264,0,264,114" Click="button_pair_Click" Height="20" VerticalAlignment="Bottom"/>
+        <Button x:Name="button_connect" Content="Соединиться" Margin="264,0,264,89" Click="button_connect_Click" Height="20" VerticalAlignment="Bottom" />
+        <Button x:Name="button_receive" Content="Получить" Margin="264,0,264,64" Click="button_receive_Click" Height="20" VerticalAlignment="Bottom" />
 
     </Grid>
 </mah:MetroWindow>

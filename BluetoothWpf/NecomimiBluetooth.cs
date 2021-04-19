@@ -196,15 +196,19 @@ namespace BluetoothWpf
                 // пока можно будет обойтись флагом.
                 _LbLoger.Print("Энцефалограф подключен");
 
-                if (_localClient.GetStream().DataAvailable)
+                if(_localClient.Connected && _localClient.GetStream().DataAvailable)
                 {
                     _localClient.GetStream().Flush();
+
+                    _isNecomimiConnected = true;
                 }
-                _isNecomimiConnected = true;
             }
             else
             {
+                _LbLoger.Print("Подключение не удалось, пробуем ещё раз");
                 _isNecomimiConnected = false;
+
+                ConnectToNecomimi();
             }
         }
 
@@ -215,7 +219,15 @@ namespace BluetoothWpf
                 // set pin of device to connect with
                 _localClient.SetPin(_pinCode);
                 // async connection method
-                _localClient.BeginConnect(_necomimmiDevice.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(BtConnect), _necomimmiDevice);
+
+                if (!_necomimmiDevice.Connected)
+                {
+                    _localClient.BeginConnect(_necomimmiDevice.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(BtConnect), _necomimmiDevice);
+                }
+                else
+                {
+                    _LbLoger.Print("ЭЭГ уже подключен");
+                }
             }
         }
 
@@ -226,12 +238,46 @@ namespace BluetoothWpf
                 var btStream = _localClient.GetStream();
                 int counter = 0;
 
-                //while (btStream.DataAvailable)
-                //{
-                //    int readByte = btStream.ReadByte();
-                //    _LbLoger.Print(String.Format("{0}->{1,10:X} ", counter, readByte));
-                //    counter++;
-                //}
+                while (btStream.DataAvailable)
+                {
+                    int syncByte1 = btStream.ReadByte();
+                    int syncByte2 = btStream.ReadByte();
+
+                    if(syncByte1 == 0xAA && syncByte2 == 0xAA)
+                    {
+                        btStream.ReadByte();//skip size
+                        int readByte = btStream.ReadByte();
+
+                        int extendentCodeLevel = 0;
+                        //пропускаем extendent code и считаем
+                        while (readByte == 0x55)
+                        {
+                            extendentCodeLevel++;
+                            readByte = btStream.ReadByte();
+                        }
+                        int code = readByte;
+                        if (code == 0x04)
+                        {
+                            _LbLoger.Print("Есть пакет с вниманием");
+                            for (int i = 0; i < 10; i++)
+                            {
+                                _LbLoger.Print(String.Format("{0,10:X} ", btStream.ReadByte()));
+                            }
+                        }
+                        else if(code != 0x80)
+                        {
+                            _LbLoger.Print("Есть пакет не 0x80, - " + code);
+                            for(int i=0;i<10;i++)
+                            {
+                                _LbLoger.Print(String.Format("{0,10:X} ", btStream.ReadByte()));
+                            }
+                        }
+                    }
+
+                    //    _LbLoger.Print(String.Format("{0}->{1,10:X} ", counter, readByte));
+                    //counter++;
+                }
+                _LbLoger.Print("Порция считана");
             }
         }
 

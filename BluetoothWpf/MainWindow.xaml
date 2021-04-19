@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" WindowStyle="SingleBorderWindow">
     <Grid Background="Azure">
-        <ListBox x:Name="listBox1_btDevices" Margin="10,10,0,177" HorizontalAlignment="Left" Width="275"/>
+        <ListBox x:Name="listBox1_btDevices" Margin="0,10,0,177" HorizontalAlignment="Center" Width="780"/>
         <Button x:Name="button_Rescan" Content="Запустить сканирование" Click="button_scan_Click" Margin="264,0,264,139" Height="21" VerticalAlignment="Bottom"/>
         <Button x:Name="button_pair" Content="Сопрячь" Margin="264,0,264,114" Click="button_pair_Click" Height="20" VerticalAlignment="Bottom"/>
         <Button x:Name="button_connect" Content="Соединиться" Margin="264,0,264,89" Click="button_connect_Click" Height="20" VerticalAlignment="Bottom" />

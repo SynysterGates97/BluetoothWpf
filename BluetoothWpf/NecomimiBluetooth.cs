@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Text;
 using System.Windows;
 using InTheHand.Net;
@@ -44,6 +45,15 @@ namespace BluetoothWpf
 
             _LbLoger = lbLoger;
         }
+
+        ~NecomimiBluetooth()
+        {
+            if(_localClient != null)
+            {
+                _localClient.Client.Disconnect(false);
+            }
+        }
+
 
         private bool _isNecomimiConnected = false;
         public bool IsNecomimiConnected 
@@ -185,6 +195,8 @@ namespace BluetoothWpf
 
                 // пока можно будет обойтись флагом.
                 _LbLoger.Print("Энцефалограф подключен");
+
+                _localClient.GetStream().Flush();
                 _isNecomimiConnected = true;
             }
             else
@@ -210,12 +222,35 @@ namespace BluetoothWpf
             {
                 var btStream = _localClient.GetStream();
                 int counter = 0;
-                while (btStream.DataAvailable)
+
+                var fileStream = File.Create("BIATCH.txt");
+               
+
+                byte[] buffer = new byte[256];
+                int len;
+                if ((len = btStream.Read(buffer, 0, buffer.Length)) > 0)
                 {
-                    int readByte = btStream.ReadByte();
-                    _LbLoger.Print(String.Format("{0}->{1,10:X} ", counter, readByte));
-                    counter++;
+                    fileStream.Write(buffer, 0, len);
                 }
+
+                fileStream.Close();
+
+                //_localClient.GetStream().
+                for (int i = 0; i<128; i++)
+                {
+                    if (btStream.DataAvailable)
+                    {
+                        int readByte = btStream.ReadByte();
+                        _LbLoger.Print(String.Format("{0}->{1,10:X} ", counter, readByte));
+                        counter++;
+                    }
+                }    
+                //while (btStream.DataAvailable)
+                //{
+                //    int readByte = btStream.ReadByte();
+                //    _LbLoger.Print(String.Format("{0}->{1,10:X} ", counter, readByte));
+                //    counter++;
+                //}
             }
         }
 

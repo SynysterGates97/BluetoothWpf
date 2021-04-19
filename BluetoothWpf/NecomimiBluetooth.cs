@@ -140,14 +140,10 @@ namespace BluetoothWpf
             bool isPaired = false;
             foreach (BluetoothDeviceInfo device in pairedDevicesList)
             {
-
-                for (int i = 0; i < pairedDevicesList.Length; i++)
+                if (device.Equals(_necomimmiDevice))
                 {
-                    if (device.Equals(_necomimmiDevice))
-                    {
-                        isPaired = true;
-                        break;
-                    }
+                    isPaired = true;
+                    break;
                 }
             }
 

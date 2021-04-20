@@ -36,9 +36,10 @@ namespace BluetoothWpf
             
         }
 
-        void SetStream(ref NetworkStream btStream)
-        {
+        void StartParsing(ref NetworkStream btStream)
+        {            
             _btStream = btStream;
+            ReadBtBufferTask.Start();
         }
 
         private Mutex mutex = new Mutex();
@@ -52,7 +53,9 @@ namespace BluetoothWpf
             {
                 while(_btStream.DataAvailable)
                 {
-                    _btStream
+                    int readByte = _btStream.ReadByte();
+                    if(readByte != -1)
+                        binWriter.Write(readByte);
                 }
             }
 

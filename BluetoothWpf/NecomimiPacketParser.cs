@@ -11,10 +11,10 @@ namespace BluetoothWpf
         //Ряд атрибутов, типа амплитуды ритмов, уровни медитации/концентрации.
         //по умолчанию параметры отрицательные
 
-       
+        NecomimimPacket necomimimPacket;
         public NecomimiPacketParser()
         {
-
+            new necomimimPacket
         }
 
         //на вход подается пакет протокола necomimi: AA AA Size ........ CRC

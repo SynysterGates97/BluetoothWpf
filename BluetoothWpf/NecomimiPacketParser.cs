@@ -14,7 +14,7 @@ namespace BluetoothWpf
         NecomimimPacket necomimimPacket;
         public NecomimiPacketParser()
         {
-            new necomimimPacket
+            //new necomimimPacket necomimimPacket
         }
 
         //на вход подается пакет протокола necomimi: AA AA Size ........ CRC

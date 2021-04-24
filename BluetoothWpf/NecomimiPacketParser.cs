@@ -6,14 +6,18 @@ using System.Text.RegularExpressions;
 
 namespace BluetoothWpf
 {
-    class NecomimiPacketParser
+    public class NecomimiPacketParser
     {
         //Ряд атрибутов, типа амплитуды ритмов, уровни медитации/концентрации.
         //по умолчанию параметры отрицательные
 
         NecomimimPacket necomimimPacket;
+
+        //TODO: Нужно перенести в другой класс, т.к. пока расположение тут нелогично
+        public Queue<NecomimimPacket> ParsedPacketsQueue { get; set; }
         public NecomimiPacketParser()
         {
+            ParsedPacketsQueue = new Queue<NecomimimPacket>();
             //new necomimimPacket necomimimPacket
         }
 
@@ -35,7 +39,7 @@ namespace BluetoothWpf
             }
             calcCrc8Nec = (byte)(~calcCrc8Nec);
 
-            if (calcCrc8Nec == payload[crcIndex])
+            if (calcCrc8Nec == payload[crcIndex+1])
             {
                 return true;
             }
@@ -46,10 +50,10 @@ namespace BluetoothWpf
         }
 
         //на вход подается пакет протокола necomimi: 
-        static public int Parse(byte[] rxBuf, int bufLen)
+        public int Parse(byte[] rxBuf, int bufLen, ref Queue<NecomimimPacket> necomimimPacketsQueue)
         {
             int parsingIndex = 0;
-            while (parsingIndex >= 2)
+            while (parsingIndex < bufLen)
             {
                 if (rxBuf[parsingIndex] == 0xAA)
                 {
@@ -62,11 +66,33 @@ namespace BluetoothWpf
                             //Данных хватает
                             int payloadBeginIndex = parsingIndex + 3;
                             //todo: при отладке проверить.
-                            int crcIndex = payloadBeginIndex + length;
+                            int crcIndex = payloadBeginIndex + length - 1;
                             bool isCrcOk = IsCrcOk(rxBuf, payloadBeginIndex, crcIndex);
 
                             if (isCrcOk)
                             {
+                                NecomimimPacket newParsedNecomimiPacket = new NecomimimPacket();
+                                NecomimimPacket.CodeLevels codeLevel = (NecomimimPacket.CodeLevels)rxBuf[parsingIndex + 3];
+
+                                switch (codeLevel)
+                                {
+                                    case(NecomimimPacket.CodeLevels.ATTENTION):
+                                    {
+                                        newParsedNecomimiPacket.ESenseAttention = rxBuf[parsingIndex + 4];
+                                        break;
+                                    }
+                                    case(NecomimimPacket.CodeLevels.MEDITATION):
+                                    {
+                                        newParsedNecomimiPacket.ESenseMeditation = rxBuf[parsingIndex + 4];
+                                        break;
+                                    }
+                                    default:
+                                        break;
+                                }
+
+                                necomimimPacketsQueue.Enqueue(newParsedNecomimiPacket);
+
+                                return (int)ParsingResult.PARSED_OK;
                                 //PARSE_VALUES
                             }
                         }

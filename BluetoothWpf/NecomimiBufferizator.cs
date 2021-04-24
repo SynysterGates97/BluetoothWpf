@@ -38,7 +38,7 @@ namespace BluetoothWpf
 
             while(_bytesInBuffer >= MINIMUM_PACKET_SIZE)
             {
-                NecomimiPacketParser.Parse(_buffer, _bytesInBuffer);
+                //NecomimiPacketParser.Parse(_buffer, _bytesInBuffer);
             }
 
 

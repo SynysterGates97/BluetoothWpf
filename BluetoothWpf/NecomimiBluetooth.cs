@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
@@ -10,7 +11,7 @@ using InTheHand.Net.Sockets;
 
 namespace BluetoothWpf
 {
-    class NecomimiBluetooth : INotifyPropertyChanged
+    public class NecomimiBluetooth : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -238,46 +239,59 @@ namespace BluetoothWpf
                 var btStream = _localClient.GetStream();
                 int counter = 0;
 
-                while (btStream.DataAvailable)
+                bool isAttentionPackFound = false;
+
+                while (!isAttentionPackFound)
                 {
-                    int syncByte1 = btStream.ReadByte();
-                    int syncByte2 = btStream.ReadByte();
-
-                    if(syncByte1 == 0xAA && syncByte2 == 0xAA)
+                    while (btStream.DataAvailable)
                     {
-                        btStream.ReadByte();//skip size
-                        int readByte = btStream.ReadByte();
+                        int syncByte1 = btStream.ReadByte();
+                        int syncByte2 = btStream.ReadByte();
+                        int size = btStream.ReadByte();//skip size
 
-                        int extendentCodeLevel = 0;
-                        //пропускаем extendent code и считаем
-                        while (readByte == 0x55)
+
+                        if (syncByte1 == 0xAA && syncByte2 == 0xAA)
                         {
-                            extendentCodeLevel++;
-                            readByte = btStream.ReadByte();
-                        }
-                        int code = readByte;
-                        if (code == 0x04)
-                        {
-                            _LbLoger.Print("Есть пакет с вниманием");
-                            for (int i = 0; i < 10; i++)
+                            if (size == 0xAA)
                             {
-                                _LbLoger.Print(String.Format("{0,10:X} ", btStream.ReadByte()));
+                                size = btStream.ReadByte();
+                            }
+                            int readByte = btStream.ReadByte();
+
+                            int extendentCodeLevel = 0;
+                            //пропускаем extendent code и считаем
+                            while (readByte == 0x55)
+                            {
+                                extendentCodeLevel++;
+                                readByte = btStream.ReadByte();
+                            }
+                            int code = readByte;
+                            if (code == 0x04)
+                            {
+                                _LbLoger.Print("Есть пакет с вниманием");
+                                for (int i = 0; i < 10; i++)
+                                {
+                                    _LbLoger.Print(String.Format("{0,10:X} ", btStream.ReadByte()));
+                                }
+                            }
+                            else if (code != 0x80 && code != 0x02)
+                            {
+                                _LbLoger.Print("Есть пакет не 0x80, - " + code);
+                                isAttentionPackFound = true;
+                                for (int i = 0; i < 10; i++)
+                                {
+                                    _LbLoger.Print(String.Format("{0,10:X} ", btStream.ReadByte()));
+                                }
                             }
                         }
-                        else if(code != 0x80)
-                        {
-                            _LbLoger.Print("Есть пакет не 0x80, - " + code);
-                            for(int i=0;i<10;i++)
-                            {
-                                _LbLoger.Print(String.Format("{0,10:X} ", btStream.ReadByte()));
-                            }
-                        }
+
+                        //    _LbLoger.Print(String.Format("{0}->{1,10:X} ", counter, readByte));
+                        //counter++;
+                        _LbLoger.Print("Порция считана");
                     }
-
-                    //    _LbLoger.Print(String.Format("{0}->{1,10:X} ", counter, readByte));
-                    //counter++;
+                    //Task.Delay(1);
                 }
-                _LbLoger.Print("Порция считана");
+                
             }
         }
 

@@ -4,96 +4,69 @@ using System.Text;
 
 namespace BluetoothWpf
 {
-    class NecomimimPacket
+    public class NecomimimPacket
     {
-
-        byte _poorSignalQuality;
-        public byte PoorSignalQuality
+        public enum CodeLevels
         {
-            get { return _poorSignalQuality; }
+            POOR_SIGNAL_QUALITY = 0x02,
+            HEART_RATE = 0x03,
+            ATTENTION = 0x04,
+            MEDITATION = 0x05,
+            RAW_8BIT = 0x06,
+            RAW_MARKER = 0x07,
+            RAW_WAVE_VALUE = 0x80,
+            EEG_POWER = 0x81,
+            ASIC_EEG_POWER = 0x83,
+            RRINTERVAL = 0x86,
+            NEVER_USED = 0x55
         }
+        public byte PoorSignalQuality { get; set; }
 
-        byte _heartRate;
-        public byte HeartRate
-        {
-            get { return _heartRate; }
-        }
+        public byte HeartRate { get; set; }
 
-        byte _eSenseAttention;
-        public byte ESenseAttention
-        {
-            get { return _eSenseAttention; }
-        }
+        public byte ESenseAttention { get; set; }
 
-        byte _eSenseMeditation;
-        public byte ESenseMeditation
-        {
-            get { return _eSenseMeditation; }
-        }
+        public byte ESenseMeditation { get; set; }
 
-        byte _rawWaveValue8bit;
-        public byte RawWaveValue8bit
-        {
-            get { return _rawWaveValue8bit; }
-        }
+        public byte RawWaveValue8bit { get; set; }
 
-        byte _rawWaveMarker;
-        public byte RawWaveMarker
-        {
-            get { return _rawWaveMarker; }
-        }
+        public byte RawWaveMarker { get; set; }
 
-        UInt16 _rawWaveValue16bit;
-        public UInt16 RawWaveValue16bit
-        {
-            get { return _rawWaveValue16bit; }
-        }
+        public UInt16 RawWaveValue16bit { get; set; }
 
         // 32Bytes.
-        byte[] _eegPower;
-        public byte[] EegPower
-        {
-            get { return _eegPower; }
-        }
+        public byte[] EegPower { get; set; }
 
         // 24bytes.
-        byte[] _asicEegPower;
-        public byte[] AsicEegPower
-        {
-            get { return _asicEegPower; }
-        }
+        public byte[] AsicEegPower { get; set; }
 
         UInt16 _printervalMs;
-        public UInt16 PrintervalMs
-        {
-            get { return _printervalMs; }
-        }
-
+        public UInt16 PrintervalMs { get; set; }
         public NecomimimPacket()
         {
-            _poorSignalQuality = 0;
-            _heartRate = 0;
-            _eSenseAttention = 0;
-            _eSenseMeditation = 0;
-            _rawWaveMarker = 0;
-            _rawWaveValue16bit = 0;
+            PoorSignalQuality = 0;
+            HeartRate = 0;
+            ESenseAttention = 0;
+            ESenseMeditation = 0;
+            RawWaveMarker = 0;
+            RawWaveValue16bit = 0;
 
-            _eegPower = new byte[32];
-            _asicEegPower = new byte[24];
-            _printervalMs = 0;
+            EegPower = new byte[32];
+            AsicEegPower = new byte[24];
+            PrintervalMs = 0;
         }
 
         void Clear()
         {
-            _poorSignalQuality = 0;
-            _heartRate = 0;
-            _eSenseAttention = 0;
-            _eSenseMeditation = 0;
-            _rawWaveMarker = 0;
-            _rawWaveValue16bit = 0;
+            PoorSignalQuality = 0;
+            HeartRate = 0;
+            ESenseAttention = 0;
+            ESenseMeditation = 0;
+            RawWaveMarker = 0;
+            RawWaveValue16bit = 0;
 
-            Array.Clear(_eegPower, 0, 32);
-            Array.Clear(_asicEegPower, 0, 24);
+            Array.Clear(EegPower, 0, 32);
+            Array.Clear(AsicEegPower, 0, 24);
             _printervalMs = 0;
         }
     }

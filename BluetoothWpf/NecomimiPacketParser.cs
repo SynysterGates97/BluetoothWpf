@@ -81,7 +81,7 @@ namespace BluetoothWpf
             return -1;
         }
 
-        //на вход подается пакет протокола necomimi: 
+        //на вход подается Массив байт размером bufLen : 
         public int Parse(byte[] rxBuf, int bufLen, ref Queue<NecomimimPacket> necomimimPacketsQueue)
         {
             //минимальный размер пакета по факту -  6 байт
@@ -140,7 +140,62 @@ namespace BluetoothWpf
                                             parsingIndex += 2;
                                             break;
                                         }
-                                    // Нужно обязательно все другие прописать!!!
+                                        //не готово
+                                    case (NecomimimPacket.CodeLevels.ASIC_EEG_POWER):
+                                        {
+                                            //(AsicEegPower, 0, 24);
+                                            //TODO: на всякий случай дописать
+                                            //newParsedNecomimiPacket.AsicEegPower = rxBuf[parsingIndex + 1];
+                                            parsingIndex += 24;
+                                            break;
+                                        }
+                                    case (NecomimimPacket.CodeLevels.EEG_POWER):
+                                        {
+                                            //(AsicEegPower, 0, 24);
+                                            //TODO: на всякий случай дописать
+                                            //newParsedNecomimiPacket.EegPower = rxBuf[parsingIndex + 1];
+                                            parsingIndex += 32;
+                                            break;
+                                        }
+                                    case (NecomimimPacket.CodeLevels.HEART_RATE):
+                                        {
+                                            newParsedNecomimiPacket.HeartRate = rxBuf[parsingIndex + 1];
+                                            parsingIndex += 2;
+                                            break;
+                                        }
+                                    case (NecomimimPacket.CodeLevels.NEVER_USED):
+                                        {
+                                            parsingIndex += 2;
+                                            break;
+                                        }
+                                    case (NecomimimPacket.CodeLevels.RAW_8BIT):
+                                        {
+                                            newParsedNecomimiPacket.RawWaveValue8bit = rxBuf[parsingIndex + 1];
+                                            parsingIndex += 2;
+                                            break;
+                                        }
+                                    case (NecomimimPacket.CodeLevels.RAW_MARKER):
+                                        {
+                                            newParsedNecomimiPacket.RawWaveMarker = rxBuf[parsingIndex + 1];
+                                            parsingIndex += 2;
+                                            break;
+                                        }
+                                    case (NecomimimPacket.CodeLevels.RAW_WAVE_VALUE):
+                                        {
+                                            UInt16 firstByte = rxBuf[parsingIndex + 1];
+                                            UInt16 secondByte = rxBuf[parsingIndex + 2];
+                                            newParsedNecomimiPacket.RawWaveValue16bit = (UInt16)(firstByte << 8 | secondByte);
+                                            parsingIndex += 3;
+                                            break;
+                                        }
+                                    case (NecomimimPacket.CodeLevels.RRINTERVAL):
+                                        {
+                                            UInt16 firstByte = rxBuf[parsingIndex + 1];
+                                            UInt16 secondByte = rxBuf[parsingIndex + 2];
+                                            newParsedNecomimiPacket.PrintervalMs = (UInt16)(firstByte << 8 | secondByte);
+                                            parsingIndex += 3;
+                                            break;
+                                        }
                                     default:
                                         parsingIndex++;
                                         break;

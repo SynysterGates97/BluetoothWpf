@@ -8,6 +8,7 @@ namespace BluetoothWpf
     {
         public enum CodeLevels
         {
+            BATTERY_LEVEL = 0x01,
             POOR_SIGNAL_QUALITY = 0x02,
             HEART_RATE = 0x03,
             ATTENTION = 0x04,
@@ -20,6 +21,7 @@ namespace BluetoothWpf
             RRINTERVAL = 0x86,
             NEVER_USED = 0x55
         }
+        public byte BatteryLevel { get; set; }
         public byte PoorSignalQuality { get; set; }
 
         public byte HeartRate { get; set; }

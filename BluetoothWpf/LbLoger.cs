@@ -22,7 +22,8 @@ namespace BluetoothWpf
         }
         private string GetDateWithLogFormat()
         {
-            string logString = String.Format("[{0:s}]: ", DateTime.Now.ToString());
+            var currentTime = DateTime.Now;
+            string logString = $"[{currentTime}:{currentTime.Millisecond}]: ";
             return logString;
         }
 

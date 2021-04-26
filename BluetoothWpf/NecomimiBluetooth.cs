@@ -138,7 +138,7 @@ namespace BluetoothWpf
         public void FindNecomimiDevice()
         {
             _LbLoger.Print("Начат поиск энцефалографа");
-            _localComponent.DiscoverDevicesAsync(255, true, true, true, true, null);
+            _localComponent.DiscoverDevicesAsync(10, true, true, true, true, null);
         }
 
         public void PairNecomimiDevice()
@@ -243,6 +243,10 @@ namespace BluetoothWpf
                 btStream.Flush();
                 necomimiReceiver.StartReceiving(ref btStream);
             }
+            else
+            {
+                _LbLoger.Print("Не получилось принять данные, т.к. подключение разорвалось");
+            }
         }
 
         //Необходимо проверять с каким-то периодом не порвалось ли подключение
@@ -250,7 +254,7 @@ namespace BluetoothWpf
         {
             if(!_localClient.Connected)
             {
-
+                _LbLoger.Print("Control->Энцефалограф не подключен");
                 //TODO: Нужно сбросить все флаги ещё.
                 OnPropertyChanged("ControlNecomomiDeviceConnection");
                 return false;

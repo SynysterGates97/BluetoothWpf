@@ -31,22 +31,36 @@ namespace BluetoothWpf
         private List<string> _listOfLogMessages;
 
         DispatcherTimer _logUpdatetimer;
+        DispatcherTimer _btControlTimer;
        
         public MainWindow()
         {
             InitializeComponent();
             _listOfLogMessages = new List<string>();
             _lbLoger = new LbLoger();
+
             _logUpdatetimer = new DispatcherTimer();
             _logUpdatetimer.Tick += new EventHandler(LogUpdateTimerCallback);
             _logUpdatetimer.Interval = new TimeSpan(0, 0, 0, 0,100);
-            
+
+            _btControlTimer = new DispatcherTimer();
+            _btControlTimer.Tick += new EventHandler(CheckBtConnectionCallback);
+            _btControlTimer.Interval = new TimeSpan(0, 0, 5);
+
+            _btControlTimer.Start();
+
             _lbLoger.PropertyChanged += _lbLoger_PropertyChanged;
            
             _necomimiBluetooth = new NecomimiBluetooth(ref _lbLoger);
         }
 
-        private void LogUpdateTimerCallback(object sender, EventArgs e)
+        private void CheckBtConnectionCallback(object sender, EventArgs e)
+        {
+
+            _necomimiBluetooth.ControlNecomomiDeviceConnection();
+
+        }
+            private void LogUpdateTimerCallback(object sender, EventArgs e)
         {
             _listOfLogMessages.Clear();
 

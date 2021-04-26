@@ -22,7 +22,7 @@ namespace BluetoothWpf
         {
             byte calcCrc8Nec = 0;
             //TODO: все же верхний код должен делать проверку
-            if (crcIndex > bufLen - 1)
+            if (crcIndex >= bufLen - 1)
                 return false;
 
             for (int i = beginIndex; i <= crcIndex; i++)

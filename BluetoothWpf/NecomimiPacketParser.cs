@@ -18,9 +18,13 @@ namespace BluetoothWpf
             ERROR
         }
 
-        static bool IsCrcOk(byte[] payload, int beginIndex, int crcIndex)
+        static bool IsCrcOk(byte[] payload, int beginIndex, int crcIndex, int bufLen)
         {
             byte calcCrc8Nec = 0;
+            //TODO: все же верхний код должен делать проверку
+            if (crcIndex > bufLen - 1)
+                return false;
+
             for (int i = beginIndex; i <= crcIndex; i++)
             {
                 calcCrc8Nec += payload[i];
@@ -91,7 +95,8 @@ namespace BluetoothWpf
                         int payloadBeginIndex = parsingIndex;
                         //todo: при отладке проверить.
                         int crcIndex = payloadBeginIndex + sizeOfPacket - 1;
-                        bool isCrcOk = IsCrcOk(rxBuf, payloadBeginIndex, crcIndex);
+
+                        bool isCrcOk = IsCrcOk(rxBuf, payloadBeginIndex, crcIndex, bufLen);
 
                         if (isCrcOk)
                         {

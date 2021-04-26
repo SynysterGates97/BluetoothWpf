@@ -46,9 +46,8 @@ namespace BluetoothWpf
             _localComponent.DiscoverDevicesProgress += new EventHandler<DiscoverDevicesEventArgs>(DiscoverDevicesProgressCallback);
             _localComponent.DiscoverDevicesComplete += new EventHandler<DiscoverDevicesEventArgs>(DiscoverDevicesCompleteCompleteCallback);
 
-            necomimiReceiver = new NecomimiReceiver();
-
             _LbLoger = lbLoger;
+            necomimiReceiver = new NecomimiReceiver(ref lbLoger);
         }
 
         ~NecomimiBluetooth()

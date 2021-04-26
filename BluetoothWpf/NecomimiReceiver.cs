@@ -27,10 +27,13 @@ namespace BluetoothWpf
 
         private Task ReadBtBufferTask;
 
+        private LbLoger _lbLoger;
+
         public ConcurrentQueue<NecomimimPacket> ParsedPacketsQueue { get; }
 
-        public NecomimiReceiver()
+        public NecomimiReceiver(ref LbLoger lbLoger)
         {
+            _lbLoger = lbLoger;
             binWriter = new BinaryWriter(new MemoryStream());
             binReader = new BinaryReader(binWriter.BaseStream);
 
@@ -80,8 +83,14 @@ namespace BluetoothWpf
                 //6 минимальный размер пакета, избавиться от магии?
                 if(byteInBufCounter != 0 && byteInBufCounter >=6)
                 {
-                    NecomimiPacketParser.Parse(readBuffer, byteInBufCounter, ref necomimimPackets);
+                    if(NecomimiPacketParser.Parse(readBuffer, byteInBufCounter, ref necomimimPackets) > 0)
+                    {
+                        _lbLoger.Print(necomimimPackets.Count.ToString());
+                        Task.Delay(10);
+                    }
                 }
+                //TODO: необходима буферизация, парсер должен возвращать количество разобранных байт
+                byteInBufCounter = 0; 
             }
 
         }

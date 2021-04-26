@@ -66,6 +66,11 @@ namespace BluetoothWpf
 
             _lbLoger.Flush(ref _listOfLogMessages);
 
+            if(listBox1_btDevices.Items.Count >= 50)
+            {
+                listBox1_btDevices.Items.Clear();
+            }
+
             if (_listOfLogMessages.Count > 0)
             {
                 foreach (string logMessage in _listOfLogMessages)

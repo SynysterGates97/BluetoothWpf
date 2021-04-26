@@ -43,14 +43,14 @@ namespace BluetoothWpf
             
         }
 
-        void StartReceiving(ref NetworkStream btStream)
+        public void StartReceiving(ref NetworkStream btStream)
         {            
             _btStream = btStream;
             ReadBtBufferTask.Start();
         }
 
 
-        void ReadBtDelegate()
+        private void ReadBtDelegate()
         {
             if (_btStream == null)
                 return;

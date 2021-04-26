@@ -2,13 +2,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BluetoothWpf;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace BluetoothWpfTests
 {
     [TestClass]
     public class UnitTest1
     {
-        NecomimiPacketParser necomimiPacketParser = new NecomimiPacketParser();
         [TestMethod]
         public void TestParser()
         {
@@ -42,8 +42,8 @@ namespace BluetoothWpfTests
                 0xe3 
             };
 
-            Queue<NecomimimPacket> queue = new Queue<NecomimimPacket>();
-            necomimiPacketParser.Parse(testBuffer, 12, ref queue);
+            ConcurrentQueue<NecomimimPacket> queue = new ConcurrentQueue<NecomimimPacket>();
+            NecomimiPacketParser.Parse(testBuffer, 12, ref queue);
 
 
             bool isParsingOk = false;
@@ -51,10 +51,15 @@ namespace BluetoothWpfTests
                 Assert.Fail();
             else 
             {
-                NecomimimPacket parsedNecomimimPacketPoorSignal = queue.Dequeue();
-                NecomimimPacket parsedNecomimimPacketBattery = queue.Dequeue();
-                NecomimimPacket parsedNecomimimPacketAttention = queue.Dequeue();
-                NecomimimPacket parsedNecomimimPacketMeditaion = queue.Dequeue();
+                //todo: Нужно будет сделать нормально
+                NecomimimPacket parsedNecomimimPacketPoorSignal;
+                    queue.TryDequeue(out parsedNecomimimPacketPoorSignal);
+                NecomimimPacket parsedNecomimimPacketBattery;
+                    queue.TryDequeue(out parsedNecomimimPacketBattery);
+                NecomimimPacket parsedNecomimimPacketAttention;
+                    queue.TryDequeue(out parsedNecomimimPacketAttention);
+                NecomimimPacket parsedNecomimimPacketMeditaion;
+                    queue.TryDequeue(out parsedNecomimimPacketMeditaion);
 
                 bool isPoorSignalParsedOk = parsedNecomimimPacketPoorSignal.PoorSignalQuality == 0x20;
                 bool isBatteryLevelParsedOk = parsedNecomimimPacketBattery.BatteryLevel == 0x7E;

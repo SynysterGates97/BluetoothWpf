@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -13,8 +15,8 @@ namespace BluetoothWpf
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //Из рассчета, что в секунду приходит около 800 байт: 133 3 байтных RAW + MED + ATT + (баттарея, плохой уровень сигнала...)
-        //Поэтому 2048 должно хватить
+        private Mutex packetsInQueueMutex;
+        private ConcurrentQueue<NecomimimPacket> necomimimPackets;
 
         private NetworkStream _btStream;
         //private const int BUFFER_SIZE = 2048;
@@ -25,11 +27,17 @@ namespace BluetoothWpf
 
         private Task ReadBtBufferTask;
 
+        public ConcurrentQueue<NecomimimPacket> ParsedPacketsQueue { get; }
+
         public NecomimiReceiver()
         {
             binWriter = new BinaryWriter(new MemoryStream());
             binReader = new BinaryReader(binWriter.BaseStream);
+
+            packetsInQueueMutex = new Mutex();
             binReader.BaseStream.Position = 0;
+
+            necomimimPackets = new ConcurrentQueue<NecomimimPacket>();
 
             ReadBtBufferTask = new Task(ReadBtDelegate);
             
@@ -41,7 +49,6 @@ namespace BluetoothWpf
             ReadBtBufferTask.Start();
         }
 
-        private Mutex mutex = new Mutex();
 
         void ReadBtDelegate()
         {
@@ -50,24 +57,30 @@ namespace BluetoothWpf
 
             byte[] readBuffer = new byte[256];
             //byte, чтобы точно не было превышения
+
             int byteInBufCounter = 0;
-            while(true)
+            while (true)
             {
-                while(_btStream.DataAvailable)
+                
+                while (_btStream.DataAvailable)
                 {
                     int readByte = _btStream.ReadByte();
                     if (readByte != -1)
                     {
                         readBuffer[byteInBufCounter] = (byte)readByte;
                         byteInBufCounter++;
-                        if(byteInBufCounter >= 256)
+                        if(byteInBufCounter > 255)
                         {
-                            //PARSE_ARRAY(readBuffer, len);
-
+                            break;
                         }
 
                     }
-                        binWriter.Write(readByte);
+                }
+
+                //6 минимальный размер пакета, избавиться от магии?
+                if(byteInBufCounter != 0 && byteInBufCounter >=6)
+                {
+                    NecomimiPacketParser.Parse(readBuffer, byteInBufCounter, ref necomimimPackets);
                 }
             }
 

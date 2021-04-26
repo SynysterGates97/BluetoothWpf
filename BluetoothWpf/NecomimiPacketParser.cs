@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -8,19 +9,6 @@ namespace BluetoothWpf
 {
     public class NecomimiPacketParser
     {
-        //Ряд атрибутов, типа амплитуды ритмов, уровни медитации/концентрации.
-        //по умолчанию параметры отрицательные
-
-        NecomimimPacket necomimimPacket;
-
-        //TODO: Нужно перенести в другой класс, т.к. пока расположение тут нелогично
-        public Queue<NecomimimPacket> ParsedPacketsQueue { get; set; }
-        public NecomimiPacketParser()
-        {
-            ParsedPacketsQueue = new Queue<NecomimimPacket>();
-            //new necomimimPacket necomimimPacket
-        }
-
         enum ParsingResult
         {
             PARSED_OK,
@@ -49,7 +37,7 @@ namespace BluetoothWpf
             }
         }
 
-        private int ParseHeader(byte[] rxBuf, int beginIndex, int len)
+        static private int ParseHeader(byte[] rxBuf, int beginIndex, int len)
         {
             int parsingIndex = beginIndex;
             while (len - parsingIndex >= 6)
@@ -82,7 +70,7 @@ namespace BluetoothWpf
         }
 
         //на вход подается Массив байт размером bufLen : 
-        public int Parse(byte[] rxBuf, int bufLen, ref Queue<NecomimimPacket> necomimimPacketsQueue)
+        static public int Parse(byte[] rxBuf, int bufLen, ref ConcurrentQueue<NecomimimPacket> necomimimPacketsQueue)
         {
             //минимальный размер пакета по факту -  6 байт
             int parsingIndex = 0;

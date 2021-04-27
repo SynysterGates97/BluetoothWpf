@@ -7,13 +7,31 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:BluetoothWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" WindowStyle="SingleBorderWindow">
-    <Grid Background="Azure">
-        <ListBox x:Name="listBox1_btDevices" Margin="0,10,0,177" HorizontalAlignment="Center" Width="780"/>
-        <Button x:Name="button_Rescan" Content="Запустить сканирование" Click="button_scan_Click" Margin="264,0,264,139" Height="21" VerticalAlignment="Bottom"/>
-        <Button x:Name="button_pair" Content="Сопрячь" Margin="264,0,264,114" Click="button_pair_Click" Height="20" VerticalAlignment="Bottom"/>
-        <Button x:Name="button_connect" Content="Соединиться" Margin="264,0,264,89" Click="button_connect_Click" Height="20" VerticalAlignment="Bottom" />
-        <Button x:Name="button_receive" Content="Получить" Margin="264,0,264,64" Click="button_receive_Click" Height="20" VerticalAlignment="Bottom" />
+        Title="MainWindow" Height="510" Width="873" WindowStyle="SingleBorderWindow">
+    <Grid Background="Azure" RenderTransformOrigin="0.645,0.573">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="263*"/>
+            <ColumnDefinition Width="537*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="62*"/>
+            <RowDefinition Height="185*"/>
+        </Grid.RowDefinitions>
+        <ListBox x:Name="listBox1_btDevices" Margin="10,39,10,128" Grid.Row="1" Grid.Column="1"/>
+        <Button x:Name="button_Rescan" Content="Запустить сканирование" Click="button_scan_Click" Margin="158,247,158,0" Height="25" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1"/>
+        <Button x:Name="button_pair" Content="Сопрячь" Margin="158,277,158,0" Click="button_pair_Click" Height="25" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1"/>
+        <Button x:Name="button_connect" Content="Соединиться" Margin="158,307,158,0" Click="button_connect_Click" Height="25" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" />
+        <Button x:Name="button_receive" Content="Начать запись эксперимента" Margin="158,337,158,0" Click="button_receive_Click" Height="25" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" />
+        <Label x:Name="label" Content="Уровень заряда:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label1" Content="Подключение:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlock_batteryLevel" Grid.Column="1" HorizontalAlignment="Left" Margin="110,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="13"><Run Language="ru-ru" Text="67%"/></TextBlock>
+        <TextBlock x:Name="textBlock_eegConnection" Grid.Column="1" HorizontalAlignment="Left" Margin="110,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18"><Run Language="ru-ru" Text="Да"/></TextBlock>
+        <ListBox x:Name="listBox" Grid.Row="1" Margin="10,0,10,10" Height="321" VerticalAlignment="Bottom">
+            <ListBoxItem Content="Иванов Иван Иванович"/>
+            <ListBoxItem Content="Александрова Александра Александровна"/>
+        </ListBox>
+        <Label x:Name="label2" Content="Список испытуемых:" HorizontalAlignment="Center" Margin="0,8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="267"/>
+        <Label x:Name="label2_Copy" Content="Ход испытания:" HorizontalAlignment="Left" Margin="10,8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="267" Grid.Column="1"/>
 
     </Grid>
 </mah:MetroWindow>

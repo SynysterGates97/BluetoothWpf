@@ -18,6 +18,7 @@ namespace BluetoothWpf
         private Mutex packetsInQueueMutex;
         private ConcurrentQueue<NecomimimPacket> necomimimPackets;
 
+        
         private NetworkStream _btStream;
         //private const int BUFFER_SIZE = 2048;
         //private byte[] _buffer;

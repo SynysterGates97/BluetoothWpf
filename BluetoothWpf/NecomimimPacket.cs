@@ -6,6 +6,18 @@ namespace BluetoothWpf
 {
     public class NecomimimPacket
     {
+        private DateTime _parsedTime;
+        public DateTime ParseTime 
+        {
+            get
+            {
+                return _parsedTime;
+            }
+            set 
+            {
+                _parsedTime = value;
+            }
+        }
         public enum CodeLevels
         {
             BATTERY_LEVEL = 0x01,
@@ -52,6 +64,8 @@ namespace BluetoothWpf
             ESenseMeditation = 0;
             RawWaveMarker = 0;
             RawWaveValue16bit = 0;
+
+            _parsedTime = DateTime.Now;
 
             EegPower = new byte[32];
             AsicEegPower = new byte[24];

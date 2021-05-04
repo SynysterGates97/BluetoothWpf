@@ -34,6 +34,9 @@ namespace BluetoothWpf
 
         private NecomimiReceiver necomimiReceiver;
 
+        private NekomimiCsvWriter _nekomimiCsvWriter;
+
+
         LbLoger _LbLoger;
 
         public NecomimiBluetooth(ref LbLoger lbLoger)
@@ -48,6 +51,7 @@ namespace BluetoothWpf
 
             _LbLoger = lbLoger;
             necomimiReceiver = new NecomimiReceiver(ref lbLoger);
+            _nekomimiCsvWriter = new NekomimiCsvWriter();
         }
 
         ~NecomimiBluetooth()

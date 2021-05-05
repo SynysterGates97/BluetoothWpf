@@ -30,7 +30,13 @@ namespace BluetoothWpf
 
         private LbLoger _lbLoger;
 
-        public ConcurrentQueue<NecomimimPacket> ParsedPacketsQueue { get; }
+        public ConcurrentQueue<NecomimimPacket> ParsedPacketsQueue 
+        { 
+            get
+            {
+                return necomimimPackets;
+            }
+        }
 
         public NecomimiReceiver(ref LbLoger lbLoger)
         {
@@ -86,7 +92,7 @@ namespace BluetoothWpf
                 {
                     if(NecomimiPacketParser.Parse(readBuffer, byteInBufCounter, ref necomimimPackets) > 0)
                     {
-                        _lbLoger.Print(necomimimPackets.Count.ToString());
+                        //_lbLoger.Print(necomimimPackets.Count.ToString());
                         Task.Delay(5);
                     }
                 }

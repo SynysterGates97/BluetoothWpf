@@ -59,7 +59,7 @@ namespace BluetoothWpf
 
             _nekomimiCsvWriter = new NekomimiCsvWriter();
 
-
+            
             _btControlTimer.Start();
 
             _lbLoger.PropertyChanged += _lbLoger_PropertyChanged;
@@ -69,7 +69,7 @@ namespace BluetoothWpf
 
         private void CsvWriteTimerCallback(object sender, EventArgs e)
         {
-            _nekomimiCsvWriter.FileName = listBox_testSubjects.SelectedItem.ToString();
+            _nekomimiCsvWriter.FileName = "Test";
 
             necomimimPacketsToCsv.Clear();
             // 1 pack per 7.5 ms = 133 packs per second
@@ -135,6 +135,7 @@ namespace BluetoothWpf
         private void button_receive_Click(object sender, RoutedEventArgs e)
         {
             _necomimiBluetooth.Receive();
+            _csvWriterTimer.Start();
         }
     }
 }

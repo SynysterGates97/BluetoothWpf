@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BluetoothWpf
 {
@@ -15,17 +16,20 @@ namespace BluetoothWpf
 
         public NekomimiCsvWriter()
         {
+            FileName = "StandartName";
         }
 
         public int TryWritePacketsToCsv(ref List<NecomimimPacket> necomimimPacketsQueue)
         {
             int writenPacks = 0;
-            using (var writer = new StreamWriter(FileName))
+            string exeFolder = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName;
+            using (var writer = new StreamWriter(exeFolder))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 foreach (var packet in necomimimPacketsQueue)
                 {
                     csv.WriteRecord(packet);
+                    csv.NextRecord();
                     writenPacks++;
                 }
             }

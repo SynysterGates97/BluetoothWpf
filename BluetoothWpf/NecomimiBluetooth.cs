@@ -74,6 +74,7 @@ namespace BluetoothWpf
 
                         if (necomimiReceiver.ParsedPacketsQueue.TryDequeue(out necomimimPacketToDeque))
                         {
+                            amountOfDequedPacks++;
                             necomimimPacketsList.Add(necomimimPacketToDeque);
                         }
                         else

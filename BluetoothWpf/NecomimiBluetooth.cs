@@ -34,7 +34,7 @@ namespace BluetoothWpf
 
         private NecomimiReceiver necomimiReceiver;
 
-        private NekomimiCsvWriter _nekomimiCsvWriter;
+       
 
 
         LbLoger _LbLoger;
@@ -51,7 +51,6 @@ namespace BluetoothWpf
 
             _LbLoger = lbLoger;
             necomimiReceiver = new NecomimiReceiver(ref lbLoger);
-            _nekomimiCsvWriter = new NekomimiCsvWriter();
         }
 
         ~NecomimiBluetooth()
@@ -62,6 +61,30 @@ namespace BluetoothWpf
             }
         }
 
+        public int GetNLastParsedPacketsFromQueue(int requestedAmountOfPacks, ref List<NecomimimPacket> necomimimPacketsList)
+        {
+            int amountOfDequedPacks = 0;
+            if (necomimiReceiver.ParsedPacketsQueue != null)
+            {
+                for (int i = 0; i < requestedAmountOfPacks; i++)
+                {
+                    if(necomimiReceiver.ParsedPacketsQueue.Count > 0)
+                    {
+                        NecomimimPacket necomimimPacketToDeque = new NecomimimPacket();
+
+                        if (necomimiReceiver.ParsedPacketsQueue.TryDequeue(out necomimimPacketToDeque))
+                        {
+                            necomimimPacketsList.Add(necomimimPacketToDeque);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            return amountOfDequedPacks;
+        }
 
         private bool _isNecomimiConnected = false;
         public bool IsNecomimiConnected 

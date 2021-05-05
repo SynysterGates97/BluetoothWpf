@@ -32,12 +32,18 @@ namespace BluetoothWpf
 
         DispatcherTimer _logUpdatetimer;
         DispatcherTimer _btControlTimer;
-       
+        DispatcherTimer _csvWriterTimer;
+
+        private List<NecomimimPacket> necomimimPacketsToCsv;
+        private NekomimiCsvWriter _nekomimiCsvWriter;
+
         public MainWindow()
         {
             InitializeComponent();
             _listOfLogMessages = new List<string>();
             _lbLoger = new LbLoger();
+
+            necomimimPacketsToCsv = new List<NecomimimPacket>();
 
             _logUpdatetimer = new DispatcherTimer();
             _logUpdatetimer.Tick += new EventHandler(LogUpdateTimerCallback);
@@ -47,11 +53,33 @@ namespace BluetoothWpf
             _btControlTimer.Tick += new EventHandler(CheckBtConnectionCallback);
             _btControlTimer.Interval = new TimeSpan(0, 0, 5);
 
+            _csvWriterTimer = new DispatcherTimer();
+            _csvWriterTimer.Tick += new EventHandler(CsvWriteTimerCallback);
+            _csvWriterTimer.Interval = new TimeSpan(0, 0, 1);
+
+            _nekomimiCsvWriter = new NekomimiCsvWriter();
+
+
             _btControlTimer.Start();
 
             _lbLoger.PropertyChanged += _lbLoger_PropertyChanged;
            
             _necomimiBluetooth = new NecomimiBluetooth(ref _lbLoger);
+        }
+
+        private void CsvWriteTimerCallback(object sender, EventArgs e)
+        {
+            _nekomimiCsvWriter.FileName = listBox_testSubjects.SelectedItem.ToString();
+
+            necomimimPacketsToCsv.Clear();
+            // 1 pack per 7.5 ms = 133 packs per second
+            int dequedPacks = _necomimiBluetooth.GetNLastParsedPacketsFromQueue(150, ref necomimimPacketsToCsv);
+
+            int writenPacks = _nekomimiCsvWriter.TryWritePacketsToCsv(ref necomimimPacketsToCsv);
+            if (writenPacks == dequedPacks)
+                _lbLoger.Print($"Записано {writenPacks}");
+            else
+                _lbLoger.Print($"Запись не удалась {dequedPacks}->{writenPacks}");
         }
 
         private void CheckBtConnectionCallback(object sender, EventArgs e)

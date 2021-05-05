@@ -17,28 +17,19 @@ namespace BluetoothWpf
         {
         }
 
-        bool TryWritePacketsToCsv(ConcurrentQueue<NecomimimPacket> necomimimPacketsQueue)
+        public int TryWritePacketsToCsv(ref List<NecomimimPacket> necomimimPacketsQueue)
         {
-            if (necomimimPacketsQueue != null)
+            int writenPacks = 0;
+            using (var writer = new StreamWriter(FileName))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
-                if (necomimimPacketsQueue.Count >= bufferizationCount)
+                foreach (var packet in necomimimPacketsQueue)
                 {
-                    using (var writer = new StreamWriter(FileName))
-                    using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-                    {
-                        for(int i = 0; i < bufferizationCount; i++)
-                        {
-                            var nekomimiPacket = new NecomimimPacket();
-                            bool isPacketDequed = necomimimPacketsQueue.TryDequeue(out nekomimiPacket);
-
-                            if(isPacketDequed)
-                                csv.WriteRecord(nekomimiPacket);
-                        }
-                        
-                    }
+                    csv.WriteRecord(packet);
+                    writenPacks++;
                 }
             }
-            return true;
+            return writenPacks;
         }
     }
 }

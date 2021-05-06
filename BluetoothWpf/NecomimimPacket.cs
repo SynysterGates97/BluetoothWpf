@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CsvHelper.Configuration.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,16 +7,12 @@ namespace BluetoothWpf
 {
     public class NecomimimPacket
     {
-        private DateTime _parsedTime;
-        public DateTime ParseTime 
+        private string _parsedTime;
+        public string ParseTime 
         {
             get
             {
                 return _parsedTime;
-            }
-            set 
-            {
-                _parsedTime = value;
             }
         }
         public enum CodeLevels
@@ -49,9 +46,11 @@ namespace BluetoothWpf
         public UInt16 RawWaveValue16bit { get; set; }
 
         // 32Bytes.
+        [Ignore]
         public byte[] EegPower { get; set; }
 
         // 24bytes.
+        [Ignore]
         public byte[] AsicEegPower { get; set; }
 
         UInt16 _printervalMs;
@@ -65,7 +64,8 @@ namespace BluetoothWpf
             RawWaveMarker = 0;
             RawWaveValue16bit = 0;
 
-            _parsedTime = DateTime.Now;
+            var currentTime = DateTime.Now;
+            _parsedTime = $"{currentTime}:{currentTime.Millisecond}";
 
             EegPower = new byte[32];
             AsicEegPower = new byte[24];

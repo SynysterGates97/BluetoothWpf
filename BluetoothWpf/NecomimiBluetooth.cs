@@ -70,7 +70,8 @@ namespace BluetoothWpf
                 {
                     if(necomimiReceiver.ParsedPacketsQueue.Count > 0)
                     {
-                        NecomimimPacket necomimimPacketToDeque = new NecomimimPacket();
+                        // TODO: проверка на null
+                        NecomimimPacket necomimimPacketToDeque;
 
                         if (necomimiReceiver.ParsedPacketsQueue.TryDequeue(out necomimimPacketToDeque))
                         {

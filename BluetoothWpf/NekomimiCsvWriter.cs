@@ -23,7 +23,7 @@ namespace BluetoothWpf
         {
             int writenPacks = 0;
             string exeFolder = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName;
-            using (var writer = new StreamWriter(exeFolder))
+            using (var writer = new StreamWriter(exeFolder,true))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 foreach (var packet in necomimimPacketsQueue)

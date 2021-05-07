@@ -22,15 +22,26 @@ namespace BluetoothWpf
         public int TryWritePacketsToCsv(ref List<NecomimimPacket> necomimimPacketsQueue)
         {
             int writenPacks = 0;
-            string exeFolder = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName;
-            using (var writer = new StreamWriter(exeFolder,true))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            string rawFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName + "_raw.csv";
+            string woutRawFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName + ".csv";
+
+            using (var rawWriter = new StreamWriter(rawFileName,true))
+            using (var woutRawWriter = new StreamWriter(woutRawFileName, true))
+            using (var rawCsv = new CsvWriter(rawWriter, CultureInfo.InvariantCulture))
             {
-                foreach (var packet in necomimimPacketsQueue)
+                using (var woutRawCsv = new CsvWriter(woutRawWriter, CultureInfo.InvariantCulture))
                 {
-                    csv.WriteRecord(packet);
-                    csv.NextRecord();
-                    writenPacks++;
+                    foreach (var packet in necomimimPacketsQueue)
+                    {
+                        if(packet.ESenseAttention != 0 || packet.ESenseMeditation != 0)
+                        {
+                            woutRawCsv.WriteRecord(packet);
+                            woutRawCsv.NextRecord();
+                        }
+                        rawCsv.WriteRecord(packet);
+                        rawCsv.NextRecord();
+                        writenPacks++;
+                    }
                 }
             }
             return writenPacks;

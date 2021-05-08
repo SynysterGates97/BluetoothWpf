@@ -73,7 +73,7 @@ namespace BluetoothWpf
 
             necomimimPacketsToCsv.Clear();
             // 1 pack per 7.5 ms = 133 packs per second
-            int dequedPacks = _necomimiBluetooth.GetNLastParsedPacketsFromQueue(150, ref necomimimPacketsToCsv);
+            int dequedPacks = _necomimiBluetooth.GetNLastParsedPacketsFromQueue(600, ref necomimimPacketsToCsv);
 
             int writenPacks = _nekomimiCsvWriter.TryWritePacketsToCsv(ref necomimimPacketsToCsv);
             if (writenPacks == dequedPacks)

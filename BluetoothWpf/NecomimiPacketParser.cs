@@ -200,7 +200,7 @@ namespace BluetoothWpf
                                 }
                             }
 
-                            
+                            parsingIndex++;
                         }
                     }
                     else

@@ -65,7 +65,7 @@ namespace BluetoothWpf
             if (_btStream == null)
                 return;
 
-            byte[] readBuffer = new byte[512];
+            byte[] readBuffer = new byte[256];
             //byte, чтобы точно не было превышения
 
             int byteInBufCounter = 0;
@@ -79,7 +79,7 @@ namespace BluetoothWpf
                     {
                         readBuffer[byteInBufCounter] = (byte)readByte;
                         byteInBufCounter++;
-                        if(byteInBufCounter > 255)
+                        if(byteInBufCounter > 128)
                         {
                             break;
                         }

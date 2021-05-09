@@ -73,6 +73,7 @@ namespace BluetoothWpf
             return -1;
         }
 
+        static int attentionCount = 0;
         //на вход подается Массив байт размером bufLen : 
         static public int Parse(byte[] rxBuf, int bufLen, ref ConcurrentQueue<NecomimimPacket> necomimimPacketsQueue)
         {
@@ -111,7 +112,13 @@ namespace BluetoothWpf
                                 {
                                     case (NecomimimPacket.CodeLevels.ATTENTION):
                                         {
+                                            newParsedNecomimiPacket.AttentionCount = attentionCount;
+                                            attentionCount++;
                                             newParsedNecomimiPacket.ESenseAttention = rxBuf[parsingIndex + 1];
+                                            if(rxBuf[parsingIndex + 1] > 100)
+                                            {
+
+                                            }
                                             parsingIndex += 2;
                                             break;
                                         }

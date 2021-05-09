@@ -30,6 +30,7 @@ namespace BluetoothWpf
             RRINTERVAL = 0x86,
             NEVER_USED = 0x55
         }
+        public int AttentionCount { get; set; }
         public byte BatteryLevel { get; set; }
         public byte PoorSignalQuality { get; set; }
 

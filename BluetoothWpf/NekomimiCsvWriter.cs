@@ -23,25 +23,33 @@ namespace BluetoothWpf
         {
             int writenPacks = 0;
             string rawFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName + "_raw.csv";
-            string woutRawFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName + ".csv";
-
+            string attentionFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName + "_attention.csv";
+            string meditationFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName + "_meditation.csv";
+            
+            //Чет пахнет, нужно почитать, как поступать в таких случаях
             using (var rawWriter = new StreamWriter(rawFileName,true))
-            using (var woutRawWriter = new StreamWriter(woutRawFileName, true))
+            using (var attentionWriter = new StreamWriter(attentionFileName, true))
+            using (var meditationWriter = new StreamWriter(meditationFileName, true))
             using (var rawCsv = new CsvWriter(rawWriter, CultureInfo.InvariantCulture))
+            using (var attentionCsv = new CsvWriter(attentionWriter, CultureInfo.InvariantCulture))
+            using (var meditationCsv = new CsvWriter(meditationWriter, CultureInfo.InvariantCulture))
             {
-                using (var woutRawCsv = new CsvWriter(woutRawWriter, CultureInfo.InvariantCulture))
+                foreach (var packet in necomimimPacketsQueue)
                 {
-                    foreach (var packet in necomimimPacketsQueue)
+                    if (packet.ESenseAttention != 0)
                     {
-                        if(packet.ESenseAttention != 0 || packet.ESenseMeditation != 0)
-                        {
-                            woutRawCsv.WriteRecord(packet);
-                            woutRawCsv.NextRecord();
-                        }
-                        rawCsv.WriteRecord(packet);
-                        rawCsv.NextRecord();
-                        writenPacks++;
+                        attentionCsv.WriteRecord(packet);
+                        attentionCsv.NextRecord();
                     }
+                    if (packet.ESenseMeditation != 0)
+                    {
+                        meditationCsv.WriteRecord(packet);
+                        meditationCsv.NextRecord();
+                    }
+                    rawCsv.WriteRecord(packet);
+                    rawCsv.NextRecord();
+
+                    writenPacks++;
                 }
             }
             return writenPacks;

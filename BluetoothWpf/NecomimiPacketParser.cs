@@ -146,7 +146,7 @@ namespace BluetoothWpf
                                             //(AsicEegPower, 0, 24);
                                             //TODO: на всякий случай дописать
                                             //newParsedNecomimiPacket.AsicEegPower = rxBuf[parsingIndex + 1];
-                                            parsingIndex += 24;
+                                            parsingIndex += 25;
                                             break;
                                         }
                                     case (NecomimimPacket.CodeLevels.EEG_POWER):
@@ -154,7 +154,7 @@ namespace BluetoothWpf
                                             //(AsicEegPower, 0, 24);
                                             //TODO: на всякий случай дописать
                                             //newParsedNecomimiPacket.EegPower = rxBuf[parsingIndex + 1];
-                                            parsingIndex += 32;
+                                            parsingIndex += 33;
                                             break;
                                         }
                                     case (NecomimimPacket.CodeLevels.HEART_RATE):

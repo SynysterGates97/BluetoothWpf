@@ -69,17 +69,26 @@ namespace BluetoothWpf
 
         private void CsvWriteTimerCallback(object sender, EventArgs e)
         {
-            _nekomimiCsvWriter.FileName = "Test";
+            _nekomimiCsvWriter.FileName = textBox_testSubject.Text;
 
             necomimimPacketsToCsv.Clear();
             // 1 pack per 7.5 ms = 133 packs per second
             int dequedPacks = _necomimiBluetooth.GetNLastParsedPacketsFromQueue(600, ref necomimimPacketsToCsv);
 
             int writenPacks = _nekomimiCsvWriter.TryWritePacketsToCsv(ref necomimimPacketsToCsv);
+
+            if(dequedPacks == 0)
+            {
+                Console.Beep();
+            }
             if (writenPacks == dequedPacks)
+            {
                 _lbLoger.Print($"Записано {writenPacks}");
+            }
             else
+            {
                 _lbLoger.Print($"Запись не удалась {dequedPacks}->{writenPacks}");
+            }
         }
 
         private void CheckBtConnectionCallback(object sender, EventArgs e)
@@ -88,7 +97,7 @@ namespace BluetoothWpf
             _necomimiBluetooth.ControlNecomomiDeviceConnection();
 
         }
-            private void LogUpdateTimerCallback(object sender, EventArgs e)
+        private void LogUpdateTimerCallback(object sender, EventArgs e)
         {
             _listOfLogMessages.Clear();
 

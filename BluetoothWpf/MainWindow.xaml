@@ -26,12 +26,9 @@
         <Label x:Name="label1" Content="Подключение:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Height="26" Width="90"/>
         <TextBlock x:Name="textBlock_batteryLevel" Grid.Column="1" HorizontalAlignment="Left" Margin="110,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="13" Width="23"><Run Language="ru-ru" Text="67%"/></TextBlock>
         <TextBlock x:Name="textBlock_eegConnection" Grid.Column="1" HorizontalAlignment="Left" Margin="110,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="23"><Run Language="ru-ru" Text="Да"/></TextBlock>
-        <ListBox x:Name="listBox_testSubjects" Grid.Row="1" Margin="10,39,10,10">
-            <ListBoxItem Content="Иванов Иван Иванович"/>
-            <ListBoxItem Content="Александрова Александра Александровна"/>
-        </ListBox>
-        <Label x:Name="label2" Content="Список испытуемых:" HorizontalAlignment="Center" Margin="0,8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="267" Height="26"/>
+        <Label x:Name="label2" Content="Испытуемый:" Margin="10,8,10,0" Grid.Row="1" VerticalAlignment="Top" Height="26"/>
         <Label x:Name="label2_Copy" Content="Ход испытания:" HorizontalAlignment="Left" Margin="10,8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="267" Grid.Column="1" Height="26"/>
+        <TextBox x:Name="textBox_testSubject" Margin="10,39,10,0" Grid.Row="1" Text="ФИО" TextWrapping="Wrap" Height="26" VerticalAlignment="Top"/>
 
     </Grid>
 </mah:MetroWindow>

@@ -28,10 +28,10 @@ namespace BluetoothWpf
             string meditationFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName + "_meditation.csv";
 
             var config = new CsvConfiguration(CultureInfo.CurrentCulture) { Delimiter = ";", Encoding = Encoding.UTF8, LeaveOpen = false};
-            //Чет пахнет, нужно почитать, как поступать в таких случаях
-            using (var rawWriter = new StreamWriter(rawFileName, true))
-            using (var attentionWriter = new StreamWriter(attentionFileName, true))
-            using (var meditationWriter = new StreamWriter(meditationFileName, true))
+            // Чет пахнет, нужно почитать, как поступать в таких случаях
+            using (var rawWriter = new StreamWriter(rawFileName, true, Encoding.UTF8))
+            using (var attentionWriter = new StreamWriter(attentionFileName, true, Encoding.UTF8))
+            using (var meditationWriter = new StreamWriter(meditationFileName, true, Encoding.UTF8))
             using (var rawCsv = new CsvWriter(rawWriter, config))
             using (var attentionCsv = new CsvWriter(attentionWriter, config))
             using (var meditationCsv = new CsvWriter(meditationWriter, config))

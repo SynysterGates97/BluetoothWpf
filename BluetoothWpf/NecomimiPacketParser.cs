@@ -105,6 +105,7 @@ namespace BluetoothWpf
                             while (parsingIndex < crcIndex)
                             {
                                 newParsedNecomimiPacket = new NecomimimPacket();
+                                newParsedNecomimiPacket.PacketContext = ExperimentContext.CurrentContext;
 
                                 NecomimimPacket.CodeLevels codeLevel = (NecomimimPacket.CodeLevels)rxBuf[parsingIndex];
 

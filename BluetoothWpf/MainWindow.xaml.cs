@@ -59,7 +59,8 @@ namespace BluetoothWpf
 
             _nekomimiCsvWriter = new NekomimiCsvWriter();
 
-            
+            ExperimentContext.CurrentContext = "Контекста нет";
+
             _btControlTimer.Start();
 
             _lbLoger.PropertyChanged += _lbLoger_PropertyChanged;

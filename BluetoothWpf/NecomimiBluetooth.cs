@@ -35,8 +35,6 @@ namespace BluetoothWpf
         private NecomimiReceiver necomimiReceiver;
 
        
-
-
         LbLoger _LbLoger;
 
         public NecomimiBluetooth(ref LbLoger lbLoger)

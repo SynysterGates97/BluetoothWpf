@@ -40,6 +40,9 @@ namespace BluetoothWpf
 
         public byte ESenseMeditation { get; set; }
 
+        // TODO: Не есть правильно хранить это здесь, но это сделать будет быстрее.
+        public string PacketContext { get; set; }
+
         public byte RawWaveValue8bit { get; set; }
 
         public byte RawWaveMarker { get; set; }
@@ -64,6 +67,8 @@ namespace BluetoothWpf
             ESenseMeditation = 0;
             RawWaveMarker = 0;
             RawWaveValue16bit = 0;
+
+            PacketContext = "Контекста нет";
 
             var currentTime = DateTime.Now;
             _parsedTime = $"{currentTime}:{currentTime.Millisecond}";

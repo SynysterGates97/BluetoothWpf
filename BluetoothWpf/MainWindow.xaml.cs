@@ -147,5 +147,11 @@ namespace BluetoothWpf
             _necomimiBluetooth.Receive();
             _csvWriterTimer.Start();
         }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            if (textBox_context.Text != null)
+                ExperimentContext.CurrentContext = textBox_context.Text;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CsvHelper;
+using CsvHelper.Configuration;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -25,14 +26,15 @@ namespace BluetoothWpf
             string rawFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName + "_raw.csv";
             string attentionFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName + "_attention.csv";
             string meditationFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName + "_meditation.csv";
-            
+
+            var config = new CsvConfiguration(CultureInfo.CurrentCulture) { Delimiter = ";", Encoding = Encoding.UTF8, LeaveOpen = false};
             //Чет пахнет, нужно почитать, как поступать в таких случаях
-            using (var rawWriter = new StreamWriter(rawFileName,true))
+            using (var rawWriter = new StreamWriter(rawFileName, true))
             using (var attentionWriter = new StreamWriter(attentionFileName, true))
             using (var meditationWriter = new StreamWriter(meditationFileName, true))
-            using (var rawCsv = new CsvWriter(rawWriter, CultureInfo.InvariantCulture))
-            using (var attentionCsv = new CsvWriter(attentionWriter, CultureInfo.InvariantCulture))
-            using (var meditationCsv = new CsvWriter(meditationWriter, CultureInfo.InvariantCulture))
+            using (var rawCsv = new CsvWriter(rawWriter, config))
+            using (var attentionCsv = new CsvWriter(attentionWriter, config))
+            using (var meditationCsv = new CsvWriter(meditationWriter, config))
             {
                 foreach (var packet in necomimimPacketsQueue)
                 {

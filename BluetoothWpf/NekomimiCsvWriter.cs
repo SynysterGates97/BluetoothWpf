@@ -20,6 +20,35 @@ namespace BluetoothWpf
             FileName = "StandartName";
         }
 
+        public void WriteHeader()
+        {
+            string rawFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName + "_raw.csv";
+            string attentionFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName + "_attention.csv";
+            string meditationFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + FileName + "_meditation.csv";
+
+            var config = new CsvConfiguration(CultureInfo.CurrentCulture) { Delimiter = ";", Encoding = Encoding.UTF8, LeaveOpen = false };
+            // Чет пахнет, нужно почитать, как поступать в таких случаях
+            using (var rawWriter = new StreamWriter(rawFileName, false, Encoding.UTF8))
+            using (var attentionWriter = new StreamWriter(attentionFileName, false, Encoding.UTF8))
+            using (var meditationWriter = new StreamWriter(meditationFileName, false, Encoding.UTF8))
+            using (var rawCsv = new CsvWriter(rawWriter, config))
+            using (var attentionCsv = new CsvWriter(attentionWriter, config))
+            using (var meditationCsv = new CsvWriter(meditationWriter, config))
+            {
+
+                rawCsv.WriteHeader<NecomimimPacket>();
+                rawCsv.NextRecord();
+                rawCsv.WriteHeader<NecomimimPacket>();
+                rawCsv.NextRecord();
+
+                attentionCsv.WriteHeader<NecomimimPacket>();
+                attentionCsv.NextRecord();
+
+                meditationCsv.WriteHeader<NecomimimPacket>();
+                meditationCsv.NextRecord();
+            }
+        }
+
         public int TryWritePacketsToCsv(ref List<NecomimimPacket> necomimimPacketsQueue)
         {
             int writenPacks = 0;

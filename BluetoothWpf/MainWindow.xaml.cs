@@ -70,8 +70,6 @@ namespace BluetoothWpf
 
         private void CsvWriteTimerCallback(object sender, EventArgs e)
         {
-            _nekomimiCsvWriter.FileName = textBox_testSubject.Text;
-
             necomimimPacketsToCsv.Clear();
             // 1 pack per 7.5 ms = 133 packs per second
             int dequedPacks = _necomimiBluetooth.GetNLastParsedPacketsFromQueue(600, ref necomimimPacketsToCsv);
@@ -145,6 +143,8 @@ namespace BluetoothWpf
         private void button_receive_Click(object sender, RoutedEventArgs e)
         {
             _necomimiBluetooth.Receive();
+            _nekomimiCsvWriter.FileName = textBox_testSubject.Text;
+            _nekomimiCsvWriter.WriteHeader();
             _csvWriterTimer.Start();
         }
 

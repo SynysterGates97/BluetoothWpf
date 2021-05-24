@@ -126,7 +126,7 @@ namespace BluetoothWpf
 
         private void button_scan_Click(object sender, RoutedEventArgs e)
         {
-            _necomimiBluetooth.StartAutoConnect();
+            //_necomimiBluetooth.StartAutoConnect();
             
         }
 

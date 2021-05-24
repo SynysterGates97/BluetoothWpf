@@ -22,6 +22,7 @@ namespace BluetoothWpf
 
         private BluetoothAddress _bluetoothClientAddr;
 
+        private Task _connectTask;
         private BluetoothEndPoint _btEndpoint;
 
         // client is used to manage connections
@@ -34,7 +35,6 @@ namespace BluetoothWpf
         const string _pinCode = "666";
 
         private NecomimiReceiver necomimiReceiver;
-
        
         LbLoger _LbLoger;
 
@@ -48,6 +48,7 @@ namespace BluetoothWpf
             _localComponent.DiscoverDevicesProgress += new EventHandler<DiscoverDevicesEventArgs>(DiscoverDevicesProgressCallback);
             _localComponent.DiscoverDevicesComplete += new EventHandler<DiscoverDevicesEventArgs>(DiscoverDevicesCompleteCompleteCallback);
 
+            //_connectTask = new Task()
             _LbLoger = lbLoger;
             necomimiReceiver = new NecomimiReceiver(ref lbLoger);
         }
@@ -88,6 +89,8 @@ namespace BluetoothWpf
         }
 
         private bool _isNecomimiConnected = false;
+
+        private bool _isConnecting = false;
         public bool IsNecomimiConnected 
         { 
             get
@@ -149,7 +152,7 @@ namespace BluetoothWpf
             }
         }
 
-        public void StartAutoConnect()
+        private void StartAutoConnect()
         {
             if(IsConnected())
             {
@@ -168,7 +171,7 @@ namespace BluetoothWpf
             else
             {
                 _LbLoger.Print($"Энецефалограф найден {_necomimmiDevice.DeviceName}, сканирование остановлено");
-                // todo: нужно сделать асинхронный запрос на пейринг.
+                // todo: нужно сделать асинхронный запрос на коннект.
                 if(PairNecomimiDevice())
                 {
                     ConnectToNecomimi();
@@ -235,15 +238,6 @@ namespace BluetoothWpf
         {
             if (result.IsCompleted)
             {
-                //TODO:
-                // Для отладочных сообщений нужно сделать отдельный массив с сообщениями,
-                // Любой поток сможет добавлять туда свои сообщения со временем.
-                // А одна задача в UI будет выводить эти сообщения в listbox.
-                // Так получится логировать сообщения от функций, выполняющихся в других потоках.
-                
-                //это сообщение будет блокировать весь интерфейс при подключении
-
-                // пока можно будет обойтись флагом.
                 _LbLoger.Print("Энцефалограф подключен");
 
                 if(_localClient.Connected && _localClient.GetStream().DataAvailable)
@@ -297,7 +291,7 @@ namespace BluetoothWpf
         {
             try
             {
-                if (_localClient == null || _localClient.Client == null)
+                if (_localClient == null || _localClient.Client == null || !_localClient.Connected)
                 {
                     return false;
                 }
@@ -312,9 +306,11 @@ namespace BluetoothWpf
         //Необходимо проверять с каким-то периодом не порвалось ли подключение
         public bool ControlNecomomiDeviceConnection()
         {
-            if(!IsConnected())
+            if(!IsConnected() && !_isConnecting)
             {
-                _LbLoger.Print("Control->Энцефалограф не подключен");
+                _isConnecting = true;
+                _LbLoger.Print("Control->Энцефалограф не подключен, подключаем");
+                StartAutoConnect();
                 //TODO: Нужно сбросить все флаги ещё.
                 OnPropertyChanged("ControlNecomomiDeviceConnection");
                 return false;

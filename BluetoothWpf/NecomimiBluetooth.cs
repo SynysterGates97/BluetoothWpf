@@ -22,7 +22,6 @@ namespace BluetoothWpf
 
         private BluetoothAddress _bluetoothClientAddr;
 
-        private Task _connectTask;
         private BluetoothEndPoint _btEndpoint;
 
         // client is used to manage connections
@@ -156,7 +155,7 @@ namespace BluetoothWpf
         {
             if(IsConnected())
             {
-                _localClient.Close();
+                //_localClient.Close();
             }
             FindNecomimiDevice();
         }
@@ -250,6 +249,7 @@ namespace BluetoothWpf
                 _LbLoger.Print("Подключение не удалось, пробуем ещё раз");
                 _isNecomimiConnected = false;
             }
+            _isConnecting = false;
         }
 
         private void ConnectToNecomimi()
@@ -308,17 +308,18 @@ namespace BluetoothWpf
         {
             if(!IsConnected())
             {
-                if (_isConnecting)
+                if (!_isConnecting)
                 {
-                }
-                else
-                {
-                    _isConnecting = true;
+                    _necomimmiDevice = null;
+                    IsNecomimiConnected = false;
+                    IsNecomimiPaired = false;
+                    IsNecomimiFound = false;
                     _LbLoger.Print("Control->Энцефалограф не подключен, подключаем");
                     StartAutoConnect();
                     //TODO: Нужно сбросить все флаги ещё.
                     OnPropertyChanged("ControlNecomomiDeviceConnection");
                 }
+                _isConnecting = true;
             }
             return true;
         }

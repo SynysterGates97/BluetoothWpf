@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -276,10 +277,19 @@ namespace BluetoothWpf
             }
         }
 
+        private bool IsConnected()
+        {
+            try
+            {
+                return !(_localClient.Client.Poll(1, SelectMode.SelectRead) && _localClient.Client.Available == 0);
+            }
+            catch (SocketException) { return false; }
+        }
+
         //Необходимо проверять с каким-то периодом не порвалось ли подключение
         public bool ControlNecomomiDeviceConnection()
         {
-            if(!_localClient.Connected)
+            if(!IsConnected())
             {
                 _LbLoger.Print("Control->Энцефалограф не подключен");
                 //TODO: Нужно сбросить все флаги ещё.
@@ -287,7 +297,6 @@ namespace BluetoothWpf
                 return false;
             }
             return true;
-
         }
 
 

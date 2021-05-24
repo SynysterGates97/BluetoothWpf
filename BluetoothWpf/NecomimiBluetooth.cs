@@ -306,14 +306,19 @@ namespace BluetoothWpf
         //Необходимо проверять с каким-то периодом не порвалось ли подключение
         public bool ControlNecomomiDeviceConnection()
         {
-            if(!IsConnected() && !_isConnecting)
+            if(!IsConnected())
             {
-                _isConnecting = true;
-                _LbLoger.Print("Control->Энцефалограф не подключен, подключаем");
-                StartAutoConnect();
-                //TODO: Нужно сбросить все флаги ещё.
-                OnPropertyChanged("ControlNecomomiDeviceConnection");
-                return false;
+                if (_isConnecting)
+                {
+                }
+                else
+                {
+                    _isConnecting = true;
+                    _LbLoger.Print("Control->Энцефалограф не подключен, подключаем");
+                    StartAutoConnect();
+                    //TODO: Нужно сбросить все флаги ещё.
+                    OnPropertyChanged("ControlNecomomiDeviceConnection");
+                }
             }
             return true;
         }

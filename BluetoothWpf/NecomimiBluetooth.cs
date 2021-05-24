@@ -149,6 +149,14 @@ namespace BluetoothWpf
             }
         }
 
+        public void StartAutoConnect()
+        {
+            if(IsConnected())
+            {
+                _localClient.Close();
+            }
+            FindNecomimiDevice();
+        }
         private void DiscoverDevicesCompleteCompleteCallback(object sender, DiscoverDevicesEventArgs e)
         {
             if (_necomimmiDevice == null)
@@ -160,22 +168,31 @@ namespace BluetoothWpf
             else
             {
                 _LbLoger.Print($"Энецефалограф найден {_necomimmiDevice.DeviceName}, сканирование остановлено");
+                // todo: нужно сделать асинхронный запрос на пейринг.
+                if(PairNecomimiDevice())
+                {
+                    ConnectToNecomimi();
+                }    
+
+
             }
         }
         
-        public void FindNecomimiDevice()
+        private void FindNecomimiDevice()
         {
             _LbLoger.Print("Начат поиск энцефалографа");
             _localComponent.DiscoverDevicesAsync(10, true, true, true, true, null);
         }
 
-        public void PairNecomimiDevice()
+
+
+        private bool PairNecomimiDevice()
         {
             
             if (_necomimmiDevice == null)
             {
                 _LbLoger.Print("Сначала нужно найти энцефалограф!!!!");
-                return;
+                return false;
             }
             BluetoothDeviceInfo[] pairedDevicesList = _localClient.DiscoverDevices(255, false, true, false, false);
 
@@ -211,6 +228,7 @@ namespace BluetoothWpf
             {
                 _LbLoger.Print("Было сопряжено ранее");
             }
+            return isPaired;
         }
 
         private void BtConnect(IAsyncResult result)
@@ -237,12 +255,10 @@ namespace BluetoothWpf
             {
                 _LbLoger.Print("Подключение не удалось, пробуем ещё раз");
                 _isNecomimiConnected = false;
-
-                ConnectToNecomimi();
             }
         }
 
-        public void ConnectToNecomimi()
+        private void ConnectToNecomimi()
         {
             if (_necomimmiDevice != null && _necomimmiDevice.Authenticated)
             {
@@ -281,7 +297,14 @@ namespace BluetoothWpf
         {
             try
             {
-                return !(_localClient.Client.Poll(1, SelectMode.SelectRead) && _localClient.Client.Available == 0);
+                if (_localClient == null || _localClient.Client == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return !(_localClient.Client.Poll(1, SelectMode.SelectRead) && _localClient.Client.Available == 0);
+                }
             }
             catch (SocketException) { return false; }
         }

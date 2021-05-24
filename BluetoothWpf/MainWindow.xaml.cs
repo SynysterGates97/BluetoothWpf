@@ -126,18 +126,18 @@ namespace BluetoothWpf
 
         private void button_scan_Click(object sender, RoutedEventArgs e)
         {
-            _necomimiBluetooth.FindNecomimiDevice();
+            _necomimiBluetooth.StartAutoConnect();
             
         }
 
         private void button_pair_Click(object sender, RoutedEventArgs e)
         {
-            _necomimiBluetooth.PairNecomimiDevice();
+            //_necomimiBluetooth.PairNecomimiDevice();
         }
 
         private void button_connect_Click(object sender, RoutedEventArgs e)
         {
-            _necomimiBluetooth.ConnectToNecomimi();
+            //_necomimiBluetooth.ConnectToNecomimi();
         }
 
         private void button_receive_Click(object sender, RoutedEventArgs e)

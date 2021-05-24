@@ -35,9 +35,6 @@ namespace BluetoothWpf
             using (var attentionCsv = new CsvWriter(attentionWriter, config))
             using (var meditationCsv = new CsvWriter(meditationWriter, config))
             {
-
-                rawCsv.WriteHeader<NecomimimPacket>();
-                rawCsv.NextRecord();
                 rawCsv.WriteHeader<NecomimimPacket>();
                 rawCsv.NextRecord();
 

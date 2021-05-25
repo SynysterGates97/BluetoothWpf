@@ -257,7 +257,7 @@ namespace BluetoothWpf
             try
             {
                 necomimiReceiver.ReadingAllowed = true;
-                if (_necomimmiDevice != null && _necomimmiDevice.Authenticated)
+                if (_necomimmiDevice != null)
                 {
                     // set pin of device to connect with
                     _localClient.SetPin(_pinCode);
@@ -284,7 +284,6 @@ namespace BluetoothWpf
             if (_localClient.Connected)
             {
                 var btStream = _localClient.GetStream();
-                int counter = 0;
 
                 btStream.Flush();
                 necomimiReceiver.StartReceiving(ref btStream);

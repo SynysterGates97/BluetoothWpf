@@ -254,20 +254,28 @@ namespace BluetoothWpf
 
         private void ConnectToNecomimi()
         {
-            if (_necomimmiDevice != null && _necomimmiDevice.Authenticated)
+            try
             {
-                // set pin of device to connect with
-                _localClient.SetPin(_pinCode);
-                // async connection method
+                necomimiReceiver.ReadingAllowed = true;
+                if (_necomimmiDevice != null && _necomimmiDevice.Authenticated)
+                {
+                    // set pin of device to connect with
+                    _localClient.SetPin(_pinCode);
+                    // async connection method
 
-                if (!_necomimmiDevice.Connected)
-                {
-                    _localClient.BeginConnect(_necomimmiDevice.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(BtConnect), _necomimmiDevice);
+                    if (!_necomimmiDevice.Connected)
+                    {
+                        _localClient.BeginConnect(_necomimmiDevice.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(BtConnect), _necomimmiDevice);
+                    }
+                    else
+                    {
+                        _LbLoger.Print("ЭЭГ уже подключен");
+                    }
                 }
-                else
-                {
-                    _LbLoger.Print("ЭЭГ уже подключен");
-                }
+            }
+            catch (SocketException sEx)
+            {
+                MessageBox.Show(sEx.SocketErrorCode.ToString());
             }
         }
 
@@ -303,6 +311,8 @@ namespace BluetoothWpf
             catch (SocketException) { return false; }
         }
 
+
+        bool deleteMe = false;
         //Необходимо проверять с каким-то периодом не порвалось ли подключение
         public bool ControlNecomomiDeviceConnection()
         {
@@ -314,6 +324,15 @@ namespace BluetoothWpf
                     IsNecomimiConnected = false;
                     IsNecomimiPaired = false;
                     IsNecomimiFound = false;
+                    necomimiReceiver.ReadingAllowed = false;
+
+                    if (deleteMe)
+                    {
+                        _localClient.Client.Shutdown(SocketShutdown.Both);
+                            
+                    }
+                    deleteMe = true;
+                    //_localClient.
                     _LbLoger.Print("Control->Энцефалограф не подключен, подключаем");
                     StartAutoConnect();
                     //TODO: Нужно сбросить все флаги ещё.

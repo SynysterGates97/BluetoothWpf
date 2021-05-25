@@ -52,9 +52,11 @@ namespace BluetoothWpf
             ReadBtBufferTask = new Task(ReadBtDelegate);            
         }
 
+        public bool ReadingAllowed { get; set; }
         public void StartReceiving(ref NetworkStream btStream)
         {            
             _btStream = btStream;
+            ReadingAllowed = true;
             ReadBtBufferTask.Start();
         }
 
@@ -70,7 +72,8 @@ namespace BluetoothWpf
             int byteInBufCounter = 0;
             while (true)
             {
-                
+                if (!ReadingAllowed)
+                    break;
                 while (_btStream.DataAvailable)
                 {
                     int readByte = _btStream.ReadByte();

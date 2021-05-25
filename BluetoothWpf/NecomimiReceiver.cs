@@ -49,7 +49,9 @@ namespace BluetoothWpf
 
             necomimimPackets = new ConcurrentQueue<NecomimimPacket>();
 
-            ReadBtBufferTask = new Task(ReadBtDelegate);            
+            ReadBtBufferTask = new Task(ReadBtDelegate);
+
+            ReadBtBufferTask.Start();
         }
 
         public bool ReadingAllowed { get; set; }
@@ -57,14 +59,12 @@ namespace BluetoothWpf
         {            
             _btStream = btStream;
             ReadingAllowed = true;
-            ReadBtBufferTask.Start();
+            //ReadBtBufferTask.Start();
         }
 
 
         private void ReadBtDelegate()
         {
-            if (_btStream == null)
-                return;
 
             byte[] readBuffer = new byte[256];
             //byte, чтобы точно не было превышения
@@ -72,8 +72,12 @@ namespace BluetoothWpf
             int byteInBufCounter = 0;
             while (true)
             {
-                if (!ReadingAllowed)
-                    break;
+
+                if (_btStream == null)
+                {
+                    Task.Delay(1000);
+                    continue;
+                }
                 while (_btStream.DataAvailable)
                 {
                     int readByte = _btStream.ReadByte();

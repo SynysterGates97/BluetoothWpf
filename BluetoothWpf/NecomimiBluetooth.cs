@@ -275,7 +275,10 @@ namespace BluetoothWpf
             }
             catch (SocketException sEx)
             {
-                MessageBox.Show(sEx.SocketErrorCode.ToString());
+                if (sEx.SocketErrorCode == SocketError.IsConnected)
+                {
+                    necomimiReceiver.ReadingAllowed = true;
+                }
             }
         }
 

@@ -59,7 +59,6 @@ namespace BluetoothWpf
         {            
             _btStream = btStream;
             ReadingAllowed = true;
-            //ReadBtBufferTask.Start();
         }
 
 
@@ -69,42 +68,52 @@ namespace BluetoothWpf
             byte[] readBuffer = new byte[256];
             //byte, чтобы точно не было превышения
 
-            int byteInBufCounter = 0;
-            while (true)
-            {
-
-                if (_btStream == null)
+           
+                int byteInBufCounter = 0;
+                while (true)
                 {
-                    Task.Delay(1000);
+
+                try
+                {
+                    if (_btStream == null)
+                    {
+                        Task.Delay(1000);
+                        continue;
+                    }
+                    while (_btStream.DataAvailable)
+                    {
+                        int readByte = _btStream.ReadByte();
+                        if (readByte != -1)
+                        {
+                            readBuffer[byteInBufCounter] = (byte)readByte;
+                            byteInBufCounter++;
+                            if (byteInBufCounter > 128)
+                            {
+                                break;
+                            }
+
+                        }
+                    }
+
+                    //6 минимальный размер пакета, избавиться от магии?
+                    if (byteInBufCounter != 0 && byteInBufCounter >= 6)
+                    {
+                        if (NecomimiPacketParser.Parse(readBuffer, byteInBufCounter, ref necomimimPackets) > 0)
+                        {
+                            //_lbLoger.Print(necomimimPackets.Count.ToString());
+                            Task.Delay(5);
+                        }
+                    }
+                    //TODO: необходима буферизация, парсер должен возвращать количество разобранных байт
+                    byteInBufCounter = 0;
+                }
+                catch (Exception ex)
+                {
+                    _lbLoger.Print(ex.Message);
                     continue;
                 }
-                while (_btStream.DataAvailable)
-                {
-                    int readByte = _btStream.ReadByte();
-                    if (readByte != -1)
-                    {
-                        readBuffer[byteInBufCounter] = (byte)readByte;
-                        byteInBufCounter++;
-                        if(byteInBufCounter > 128)
-                        {
-                            break;
-                        }
-
-                    }
-                }
-
-                //6 минимальный размер пакета, избавиться от магии?
-                if(byteInBufCounter != 0 && byteInBufCounter >=6)
-                {
-                    if(NecomimiPacketParser.Parse(readBuffer, byteInBufCounter, ref necomimimPackets) > 0)
-                    {
-                        //_lbLoger.Print(necomimimPackets.Count.ToString());
-                        Task.Delay(5);
-                    }
-                }
-                //TODO: необходима буферизация, парсер должен возвращать количество разобранных байт
-                byteInBufCounter = 0; 
             }
+            
 
         }
         //

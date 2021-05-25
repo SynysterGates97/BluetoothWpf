@@ -163,7 +163,7 @@ namespace BluetoothWpf
         {
             if (_necomimmiDevice == null)
             {
-                _localComponent.DiscoverDevicesAsync(255, true, true, true, true, null);
+                _localComponent.DiscoverDevicesAsync(10, true, true, true, true, null);
                 _LbLoger.Print($"Энецефалограф не найден продолжаем сканирование");
                 return;
             }
@@ -241,6 +241,13 @@ namespace BluetoothWpf
 
                 if(_localClient.Connected && _localClient.GetStream().DataAvailable)
                 {
+                    if(isConnectionWasEstablishedBefore)
+                    {
+                        var btStream = _localClient.GetStream();
+
+                        btStream.Flush();
+                        necomimiReceiver.StartReceiving(ref btStream);
+                    }
                     _isNecomimiConnected = true;
                 }
             }
@@ -314,7 +321,7 @@ namespace BluetoothWpf
         }
 
 
-        bool deleteMe = false;
+        bool isConnectionWasEstablishedBefore = false;
         //Необходимо проверять с каким-то периодом не порвалось ли подключение
         public bool ControlNecomomiDeviceConnection()
         {
@@ -328,13 +335,24 @@ namespace BluetoothWpf
                     IsNecomimiFound = false;
                     necomimiReceiver.ReadingAllowed = false;
 
-                    if (deleteMe)
+                    if (isConnectionWasEstablishedBefore)
                     {
-                        _localClient.Client.Shutdown(SocketShutdown.Both);
-                            
+                        _localClient.Close();
+                        _localComponent.Dispose();
+                        // TODO: чет совсем уже 
+                        _bluetoothClientAddr = new BluetoothAddress(0);
+                        _btEndpoint = new BluetoothEndPoint(_bluetoothClientAddr, BluetoothService.SerialPort);
+                        _localClient = new BluetoothClient(_btEndpoint);
+                        _localComponent = new BluetoothComponent(_localClient);
+                        
+                        _localComponent.DiscoverDevicesProgress -= DiscoverDevicesProgressCallback;
+                        _localComponent.DiscoverDevicesComplete -= DiscoverDevicesCompleteCompleteCallback;
+                        _localComponent.DiscoverDevicesProgress += new EventHandler<DiscoverDevicesEventArgs>(DiscoverDevicesProgressCallback);
+                        _localComponent.DiscoverDevicesComplete += new EventHandler<DiscoverDevicesEventArgs>(DiscoverDevicesCompleteCompleteCallback);
+
                     }
-                    deleteMe = true;
-                    //_localClient.
+                    isConnectionWasEstablishedBefore = true;
+                    
                     _LbLoger.Print("Control->Энцефалограф не подключен, подключаем");
                     StartAutoConnect();
                     //TODO: Нужно сбросить все флаги ещё.

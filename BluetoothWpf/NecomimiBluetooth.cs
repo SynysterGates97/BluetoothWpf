@@ -238,8 +238,10 @@ namespace BluetoothWpf
             if (result.IsCompleted)
             {
                 _LbLoger.Print("Энцефалограф подключен");
+                bool lcConnected = _localClient.Connected;
+                bool dataAvailable = _localClient.GetStream().DataAvailable;
 
-                if(_localClient.Connected && _localClient.GetStream().DataAvailable)
+                if (_localClient.Connected)
                 {
                     if(isConnectionWasEstablishedBefore)
                     {
@@ -249,6 +251,10 @@ namespace BluetoothWpf
                         necomimiReceiver.StartReceiving(ref btStream);
                     }
                     _isNecomimiConnected = true;
+                }
+                else
+                {
+                    _LbLoger.Print($"То самое место {lcConnected}:{dataAvailable}");
                 }
             }
             else

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace BluetoothWpf
 
             _logUpdatetimer = new DispatcherTimer();
             _logUpdatetimer.Tick += new EventHandler(LogUpdateTimerCallback);
-            _logUpdatetimer.Interval = new TimeSpan(0, 0, 0, 0,100);
+            _logUpdatetimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
 
             _btControlTimer = new DispatcherTimer();
             _btControlTimer.Tick += new EventHandler(CheckBtConnectionCallback);
@@ -58,14 +59,28 @@ namespace BluetoothWpf
             _csvWriterTimer.Interval = new TimeSpan(0, 0, 1);
 
             _nekomimiCsvWriter = new NekomimiCsvWriter();
-
-            ExperimentContext.CurrentContext = "Контекста нет";
+            FillContexts();
 
             _btControlTimer.Start();
 
             _lbLoger.PropertyChanged += _lbLoger_PropertyChanged;
-           
+
             _necomimiBluetooth = new NecomimiBluetooth(ref _lbLoger);
+        }
+
+        private void FillContexts()
+        {
+            ExperimentContext.CurrentContext = "Начало теста";
+
+            //AppDomain.CurrentDomain.BaseDirectory
+            string[] contextFiles = Directory.GetFiles($"{AppDomain.CurrentDomain.BaseDirectory}\\ExperimentImages", "*.*", SearchOption.TopDirectoryOnly).Select(System.IO.Path.GetFileName).ToArray();
+
+            foreach (var cotextFileName in contextFiles)
+            {
+                comboBox_experimentContext.Items.Add(cotextFileName);
+            }
+            comboBox_experimentContext.Items.Add("Переход в сенсорную комнату");
+            comboBox_experimentContext.Items.Add("Сеанс релаксации");
         }
 
         private void CsvWriteTimerCallback(object sender, EventArgs e)
@@ -126,16 +141,37 @@ namespace BluetoothWpf
 
         private void button_receive_Click(object sender, RoutedEventArgs e)
         {
-            _necomimiBluetooth.Receive();
-            _nekomimiCsvWriter.FileName = textBox_testSubject.Text;
-            _nekomimiCsvWriter.WriteHeader();
-            _csvWriterTimer.Start();
+            if (textBox_testSubject.Text != "")
+            {
+                _necomimiBluetooth.Receive();                
+                _csvWriterTimer.Start();
+            }
+            else
+            {
+                MessageBox.Show("Введите имя!");
+            }
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            if (textBox_context.Text != null)
-                ExperimentContext.CurrentContext = textBox_context.Text;
+            if (comboBox_experimentContext.Text != null)
+                ExperimentContext.CurrentContext = comboBox_experimentContext.Text;
+        }
+
+        private void button_SetSubjectName_Click(object sender, RoutedEventArgs e)
+        {
+            if (textBox_testSubject.Text != "")
+            {
+                if (_nekomimiCsvWriter.FileName != textBox_testSubject.Text)
+                {
+                    _nekomimiCsvWriter.FileName = textBox_testSubject.Text;
+                    _nekomimiCsvWriter.WriteHeader();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Введите имя!");
+            }
         }
     }
 }

@@ -17,17 +17,19 @@
             <RowDefinition Height="66"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ListBox x:Name="listBox1_btDevices" Margin="10,39,10,0" Grid.Row="1" Grid.Column="1" Height="259" VerticalAlignment="Top"/>
-        <Button x:Name="button_receive" Content="Начать запись эксперимента" Margin="158,303,158,0" Click="button_receive_Click" Height="25" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" />
+        <ListBox x:Name="listBox1_btDevices" Margin="10,40,10,39" Grid.Row="1" Grid.Column="1"/>
+        <Button x:Name="button_receive" Content="Начать запись эксперимента" Margin="158,0,158,10" Click="button_receive_Click" Grid.Row="1" Grid.Column="1" Height="25" VerticalAlignment="Bottom" />
         <Label x:Name="label" Content="Заряд" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="100"/>
         <Label x:Name="label1" Content="Подключение:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Height="26" Width="90"/>
         <TextBlock x:Name="textBlock_batteryLevel" Grid.Column="1" HorizontalAlignment="Left" Margin="110,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="13" Width="23"><Run Language="ru-ru" Text="Есть"/><LineBreak/><Run Language="ru-ru"/></TextBlock>
         <TextBlock x:Name="textBlock_eegConnection" Grid.Column="1" HorizontalAlignment="Left" Margin="110,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="23"><Run Language="ru-ru" Text="Да"/></TextBlock>
-        <Label x:Name="label2" Content="Испытуемый:" Margin="10,8,10,0" Grid.Row="1" VerticalAlignment="Top" Height="26"/>
+        <Label x:Name="label2" Content="Введите ФИО испытуемого:" Margin="10,8,10,0" Grid.Row="1" VerticalAlignment="Top" Height="26"/>
         <Label x:Name="label2_Copy" Content="Ход испытания:" HorizontalAlignment="Left" Margin="10,8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="267" Grid.Column="1" Height="26"/>
-        <TextBox x:Name="textBox_testSubject" Margin="10,39,10,0" Grid.Row="1" Text="ФИО" TextWrapping="Wrap" Height="26" VerticalAlignment="Top"/>
-        <TextBox x:Name="textBox_context" Margin="10,156,10,0" Grid.Row="1" Text="Контекст" TextWrapping="Wrap" Height="26" VerticalAlignment="Top"/>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="10,196,0,0" Grid.Row="1" VerticalAlignment="Top" Click="button_Click"/>
+        <TextBox x:Name="textBox_testSubject" Margin="10,39,10,0" Grid.Row="1" TextWrapping="Wrap" Height="26" VerticalAlignment="Top"/>
+        <Button x:Name="button" Content="Задать контекст" Grid.Row="1" VerticalAlignment="Top" Click="button_Click" Margin="91,184,91,0"/>
+        <ComboBox x:Name="comboBox_experimentContext" Margin="10,153,10,0" Grid.Row="1" VerticalAlignment="Top" SelectedIndex="0"/>
+        <Label x:Name="label2_Copy1" Content="Выберите контекст:" Margin="10,122,10,0" Grid.Row="1" VerticalAlignment="Top" Height="26"/>
+        <Button x:Name="button_SetSubjectName" Content="Задать испытуемого" Grid.Row="1" VerticalAlignment="Top" Margin="78,70,77,0" Click="button_SetSubjectName_Click"/>
 
     </Grid>
 </mah:MetroWindow>

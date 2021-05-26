@@ -7,7 +7,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:BluetoothWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="510" Width="873" WindowStyle="SingleBorderWindow">
+        Title="Волна V0.1" Height="510" Width="873" WindowStyle="SingleBorderWindow">
     <Grid Background="Azure" RenderTransformOrigin="0.645,0.573">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="263*"/>

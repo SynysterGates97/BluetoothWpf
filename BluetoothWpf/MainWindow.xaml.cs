@@ -166,6 +166,7 @@ namespace BluetoothWpf
                 {
                     _nekomimiCsvWriter.FileName = textBox_testSubject.Text;
                     _nekomimiCsvWriter.WriteHeader();
+                    ExperimentContext.CurrentContext = comboBox_experimentContext.Text;
                 }
             }
             else

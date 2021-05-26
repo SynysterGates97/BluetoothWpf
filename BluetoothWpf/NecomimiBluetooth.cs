@@ -333,7 +333,7 @@ namespace BluetoothWpf
                     IsNecomimiConnected = false;
                     IsNecomimiPaired = false;
                     IsNecomimiFound = false;
-                    necomimiReceiver.ReadingAllowed = false;
+                    necomimiReceiver.StopReceiving();
 
                     if (isConnectionWasEstablishedBefore)
                     {

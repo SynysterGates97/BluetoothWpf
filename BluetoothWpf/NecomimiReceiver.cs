@@ -61,6 +61,12 @@ namespace BluetoothWpf
             ReadingAllowed = true;
         }
 
+        public void StopReceiving()
+        {
+            _btStream = null;
+            ReadingAllowed = false;
+        }
+
 
         private void ReadBtDelegate()
         {
@@ -68,13 +74,18 @@ namespace BluetoothWpf
             byte[] readBuffer = new byte[256];
             //byte, чтобы точно не было превышения
 
-           
-                int byteInBufCounter = 0;
-                while (true)
-                {
 
+            int byteInBufCounter = 0;
+            while (true)
+            {
+                if(!ReadingAllowed)
+                {
+                    Task.Delay(1000);
+                    continue;
+                }
                 try
                 {
+
                     if (_btStream == null)
                     {
                         Task.Delay(1000);
@@ -107,16 +118,14 @@ namespace BluetoothWpf
                     //TODO: необходима буферизация, парсер должен возвращать количество разобранных байт
                     byteInBufCounter = 0;
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     _lbLoger.Print(ex.Message);
-                    continue;
                 }
             }
-            
+
 
         }
-        //
 
         ///////////////////////////////////////////////////////////////////////
         protected void OnPropertyChanged(string name = null)

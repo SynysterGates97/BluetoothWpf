@@ -275,7 +275,7 @@ namespace BluetoothWpf
                     // set pin of device to connect with
                     _localClient.SetPin(_pinCode);
                     // async connection method
-
+                    _necomimmiDevice.Refresh();
                     if (!_necomimmiDevice.Connected)
                     {
                         _localClient.BeginConnect(_necomimmiDevice.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(BtConnect), _necomimmiDevice);
@@ -312,18 +312,15 @@ namespace BluetoothWpf
 
         private bool IsConnected()
         {
-            try
+            if(_necomimmiDevice != null)
             {
-                if (_localClient == null || _localClient.Client == null || !_localClient.Connected)
-                {
+                _necomimmiDevice.Refresh();
+                if (_necomimmiDevice.Connected)
+                    return true;
+                else 
                     return false;
-                }
-                else
-                {
-                    return !(_localClient.Client.Poll(1, SelectMode.SelectRead) && _localClient.Client.Available == 0);
-                }
             }
-            catch (SocketException) { return false; }
+            return false;
         }
 
 

@@ -97,7 +97,7 @@ namespace BluetoothWpf
             }
             if (writenPacks == dequedPacks)
             {
-                _lbLoger.Print($"Записано {writenPacks}");
+                _lbLoger.Print($"Записано {writenPacks}. {ExperimentContext.CurrentContext}. {ExperimentContext.TestSubjectName}");
             }
             else
             {
@@ -167,6 +167,7 @@ namespace BluetoothWpf
                     _nekomimiCsvWriter.FileName = textBox_testSubject.Text;
                     _nekomimiCsvWriter.WriteHeader();
                     ExperimentContext.CurrentContext = comboBox_experimentContext.Text;
+                    ExperimentContext.TestSubjectName = textBox_testSubject.Text ?? "Поле ФИО пустое";
                 }
             }
             else

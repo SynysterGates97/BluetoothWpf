@@ -21,8 +21,8 @@
         <Button x:Name="button_receive" Content="Начать запись эксперимента" Margin="158,0,158,10" Click="button_receive_Click" Grid.Row="1" Grid.Column="1" Height="25" VerticalAlignment="Bottom" />
         <Label x:Name="label" Content="Заряд" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="100"/>
         <Label x:Name="label1" Content="Подключение:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Height="26" Width="90"/>
-        <TextBlock x:Name="textBlock_batteryLevel" Grid.Column="1" HorizontalAlignment="Left" Margin="110,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="13" Width="23"><Run Language="ru-ru" Text="Есть"/><LineBreak/><Run Language="ru-ru"/></TextBlock>
-        <TextBlock x:Name="textBlock_eegConnection" Grid.Column="1" HorizontalAlignment="Left" Margin="110,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="23"><Run Language="ru-ru" Text="Да"/></TextBlock>
+        <TextBlock x:Name="textBlock_batteryLevel" Grid.Column="1" HorizontalAlignment="Left" Margin="110,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="76"><Run Language="ru-ru" Text="В разработке"/></TextBlock>
+        <TextBlock x:Name="textBlock_eegConnection" Grid.Column="1" HorizontalAlignment="Left" Margin="110,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="15" Width="120"><Run Language="ru-ru" Text="В разработке"/></TextBlock>
         <Label x:Name="label2" Content="Введите ФИО испытуемого:" Margin="10,8,10,0" Grid.Row="1" VerticalAlignment="Top" Height="26"/>
         <Label x:Name="label2_Copy" Content="Ход испытания:" HorizontalAlignment="Left" Margin="10,8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="267" Grid.Column="1" Height="26"/>
         <TextBox x:Name="textBox_testSubject" Margin="10,39,10,0" Grid.Row="1" TextWrapping="Wrap" Height="26" VerticalAlignment="Top"/>

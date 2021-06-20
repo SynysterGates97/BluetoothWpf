@@ -1,30 +1,14 @@
 ﻿using CsvHelper.Configuration.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace BluetoothWpf
 {
     public class NecomimimPacket
     {
-        private string _parsedTime;
-
-        public string ParseTimeAbsolute 
-        {
-            get
-            {
-                return _parsedTime;
-            }
-        }
-
-        private string _parseTimeRelativeMinutes;
-
-        public string ParseTimeRelative
-        {
-            get { return _parseTimeRelativeMinutes; }
-        }
-
-        public enum CodeLevels
+       public enum CodeLevels
         {
             BATTERY_LEVEL = 0x01,
             POOR_SIGNAL_QUALITY = 0x02,
@@ -39,23 +23,52 @@ namespace BluetoothWpf
             RRINTERVAL = 0x86,
             NEVER_USED = 0x55
         }
+
+        private string _parsedTime;
+
+        [Name("Время получения данных")]
+        public string ParseTimeAbsolute
+        {
+            get
+            {
+                return _parsedTime;
+            }
+        }
+
+        private string _parseTimeRelativeMinutes;
+
+        [Name("Время с начала эксперимента")]
+        public string ParseTimeRelative
+        {
+            get { return _parseTimeRelativeMinutes; }
+        }
         public int AttentionCount { get; set; }
+
+        [Name("Уровень заряда")]
         public byte BatteryLevel { get; set; }
+        [Name("Индикатор плохого сигнала")]
         public byte PoorSignalQuality { get; set; }
 
+        [Ignore]
         public byte HeartRate { get; set; }
 
+        [Name("Уровень концентрации")]
         public byte ESenseAttention { get; set; }
 
+        [Name("Уровень медитации")]
         public byte ESenseMeditation { get; set; }
 
         // TODO: Не есть правильно хранить это здесь, но это сделать будет быстрее.
+        [Name("Контекст получения данных")]
         public string PacketContext { get; set; }
 
+        [Name("Сырой сигнал, 8bit")]
         public byte RawWaveValue8bit { get; set; }
 
+        [Name("Пометки для сырого сигнала")]
         public byte RawWaveMarker { get; set; }
 
+        [Name("Сырой сигнал, 16bit")]
         public UInt16 RawWaveValue16bit { get; set; }
 
         // 32Bytes.
@@ -67,6 +80,7 @@ namespace BluetoothWpf
         public byte[] AsicEegPower { get; set; }
 
         UInt16 _printervalMs;
+        [Ignore]
         public UInt16 PrintervalMs { get; set; }
         public NecomimimPacket()
         {

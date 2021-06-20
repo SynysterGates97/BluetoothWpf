@@ -8,13 +8,22 @@ namespace BluetoothWpf
     public class NecomimimPacket
     {
         private string _parsedTime;
-        public string ParseTime 
+
+        public string ParseTimeAbsolute 
         {
             get
             {
                 return _parsedTime;
             }
         }
+
+        private string _parseTimeRelativeMinutes;
+
+        public string ParseTimeRelative
+        {
+            get { return _parseTimeRelativeMinutes; }
+        }
+
         public enum CodeLevels
         {
             BATTERY_LEVEL = 0x01,
@@ -71,7 +80,9 @@ namespace BluetoothWpf
             PacketContext = "Контекста нет";
 
             var currentTime = DateTime.Now;
+            TimeSpan relativeTimeSpan = currentTime - ExperimentContext.LastExperimentBeginTime;
             _parsedTime = $"{currentTime}:{currentTime.Millisecond}";
+            _parseTimeRelativeMinutes = $"{relativeTimeSpan.TotalHours}:{relativeTimeSpan.TotalMinutes};{relativeTimeSpan.TotalSeconds}";
 
             EegPower = new byte[32];
             AsicEegPower = new byte[24];

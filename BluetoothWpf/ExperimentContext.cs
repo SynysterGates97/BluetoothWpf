@@ -12,6 +12,7 @@ namespace BluetoothWpf
         public static string TestSubjectName
         { get; set; }
 
+        public static DateTime LastExperimentBeginTime { get; set; }
 
     }
 }

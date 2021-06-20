@@ -156,6 +156,8 @@ namespace BluetoothWpf
         {
             if (comboBox_experimentContext.Text != null)
                 ExperimentContext.CurrentContext = comboBox_experimentContext.Text;
+
+            ExperimentContext.LastExperimentBeginTime = DateTime.Now;
         }
 
         private void button_SetSubjectName_Click(object sender, RoutedEventArgs e)

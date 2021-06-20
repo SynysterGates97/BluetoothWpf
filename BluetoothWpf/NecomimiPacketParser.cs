@@ -116,10 +116,6 @@ namespace BluetoothWpf
                                             newParsedNecomimiPacket.AttentionCount = attentionCount;
                                             attentionCount++;
                                             newParsedNecomimiPacket.ESenseAttention = rxBuf[parsingIndex + 1];
-                                            if(rxBuf[parsingIndex + 1] > 100)
-                                            {
-
-                                            }
                                             parsingIndex += 2;
                                             break;
                                         }

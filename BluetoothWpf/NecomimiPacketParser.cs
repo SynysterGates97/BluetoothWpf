@@ -113,6 +113,11 @@ namespace BluetoothWpf
                                 {
                                     case (NecomimimPacket.CodeLevels.ATTENTION):
                                         {
+                                            if (ExperimentContext.isContextChangedAttention)
+                                            {
+                                                newParsedNecomimiPacket.ContextChangedIndicator = 100;
+                                                ExperimentContext.isContextChangedAttention = false;
+                                            }
                                             newParsedNecomimiPacket.AttentionCount = attentionCount;
                                             attentionCount++;
                                             newParsedNecomimiPacket.ESenseAttention = rxBuf[parsingIndex + 1];
@@ -121,6 +126,11 @@ namespace BluetoothWpf
                                         }
                                     case (NecomimimPacket.CodeLevels.MEDITATION):
                                         {
+                                            if (ExperimentContext.isContextChangedMeditation)
+                                            {
+                                                newParsedNecomimiPacket.ContextChangedIndicator = 100;
+                                                ExperimentContext.isContextChangedMeditation = false;
+                                            }
                                             newParsedNecomimiPacket.ESenseMeditation = rxBuf[parsingIndex + 1];
                                             parsingIndex += 2;
                                             break;

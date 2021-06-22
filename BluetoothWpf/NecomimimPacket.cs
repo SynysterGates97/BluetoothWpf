@@ -42,7 +42,9 @@ namespace BluetoothWpf
         {
             get { return _parseTimeRelativeMinutes; }
         }
-        public int AttentionCount { get; set; }
+
+        [Name("Индикатор смены контекста")]
+        public int ContextChangedIndicator { get; set; }
 
         [Name("Уровень заряда")]
         public byte BatteryLevel { get; set; }
@@ -70,6 +72,10 @@ namespace BluetoothWpf
 
         [Name("Сырой сигнал, 16bit")]
         public UInt16 RawWaveValue16bit { get; set; }
+
+
+        [Name("Отладочная информация AC")]
+        public int AttentionCount { get; set; }
 
         // 32Bytes.
         [Ignore]

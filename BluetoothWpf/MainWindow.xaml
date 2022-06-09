@@ -142,6 +142,11 @@
                             <StackPanel>
                                 <StackPanel.Background>#49B4E8</StackPanel.Background>
                                 <Label>"Вью модель"</Label>
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                                    <Label Content="Задайте номер COM-порта"/>
+                                    <TextBox x:Name="textBox_comPortNumber"></TextBox>
+                                    <Button Click="button_startWorkWithCom_Click" Content="Подключиться"></Button>
+                                </StackPanel>
                             </StackPanel>
                         </TabItem.Content>
                     </TabItem>

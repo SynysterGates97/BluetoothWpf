@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using BluetoothWpf.Models.ComPort;
 using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
@@ -66,6 +67,27 @@ namespace BluetoothWpf
             // _lbLoger.PropertyChanged += _lbLoger_PropertyChanged;
             //
             // _necomimiBluetooth = new NecomimiBluetooth(ref _lbLoger);
+            
+        }
+
+        
+        private void button_startWorkWithCom_Click(object sender, RoutedEventArgs e)
+        {
+            var comNumberText = textBox_comPortNumber.Text;
+            if (comNumberText != "")
+            {
+                int portNumber = 0;
+                bool valueIsOk = int.TryParse(comNumberText, out portNumber);
+
+                if (valueIsOk)
+                {
+                    ComPortProcessor comPortProcessor = new ComPortProcessor(portNumber);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Введите имя!");
+            }
         }
 
         private void FillContexts()
@@ -177,5 +199,6 @@ namespace BluetoothWpf
                 MessageBox.Show("Введите имя!");
             }
         }
+
     }
 }

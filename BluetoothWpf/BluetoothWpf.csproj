@@ -12,6 +12,11 @@
     <PackageReference Include="MahApps.Metro" Version="2.4.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels" />
+    <Folder Include="Views" />
+  </ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="if not exist &quot;$(TargetDir)ExperimentImages&quot; mkdir &quot;$(TargetDir)ExperimentImages&quot;" />
   </Target>

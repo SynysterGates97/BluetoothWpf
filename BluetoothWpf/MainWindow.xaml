@@ -105,6 +105,35 @@
                 </LinearGradientBrush>
             </Border.Background>
                 <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TabItem x:Name="New">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Height="10" Width="10" Fill="#49B4E8" />
+                                <TextBlock Margin="3">Оценка учебного материала</TextBlock>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <StackPanel>
+                                <StackPanel.Background>#49B4E8</StackPanel.Background>
+                                <Label>"Вью модель"</Label>
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                                    <Label Content="Задайте номер COM-порта"/>
+                                    <TextBox x:Name="textBox_comPortNumber"></TextBox>
+                                    <Button Click="button_startWorkWithCom_Click" Content="Подключиться"></Button>
+                                    
+                                    <StackPanel>
+                                        <Label Content="Уровень медитации:"/>
+                                        <ProgressBar x:Name="progressBar_Attention"></ProgressBar>
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <Label Content="Уровень концентрации:"/>
+                                        <ProgressBar x:Name="progressBar_Meditation"></ProgressBar>
+                                    </StackPanel>
+                                    
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem.Content>
+                    </TabItem>
                     <TabItem x:Name="LegacyExperiments">
                         <TabItem.Header>
                             <StackPanel Orientation="Horizontal">
@@ -128,27 +157,6 @@
                                 
                                 <Button x:Name="button_receive" Content="Начать запись эксперимента" Margin="158,0,158,10" Grid.Row="1"
                                         Grid.Column="1" Height="25" VerticalAlignment="Bottom" />
-                            </StackPanel>
-                        </TabItem.Content>
-                    </TabItem>
-                    <TabItem x:Name="New">
-                        <TabItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <Ellipse Height="10" Width="10" Fill="#49B4E8" />
-                                <TextBlock Margin="3">Оценка учебного материала</TextBlock>
-                            </StackPanel>
-                        </TabItem.Header>
-                        <TabItem.Content>
-                            <StackPanel>
-                                <StackPanel.Background>#49B4E8</StackPanel.Background>
-                                <Label>"Вью модель"</Label>
-                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                                    <Label Content="Задайте номер COM-порта"/>
-                                    <TextBox x:Name="textBox_comPortNumber"></TextBox>
-                                    <ProgressBar x:Name="progressBar_Attention"></ProgressBar>
-                                    <ProgressBar x:Name="progressBar_Meditation"></ProgressBar>
-                                    <Button Click="button_startWorkWithCom_Click" Content="Подключиться"></Button>
-                                </StackPanel>
                             </StackPanel>
                         </TabItem.Content>
                     </TabItem>

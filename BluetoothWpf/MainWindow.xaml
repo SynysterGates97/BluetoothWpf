@@ -145,6 +145,8 @@
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                                     <Label Content="Задайте номер COM-порта"/>
                                     <TextBox x:Name="textBox_comPortNumber"></TextBox>
+                                    <ProgressBar x:Name="progressBar_Attention"></ProgressBar>
+                                    <ProgressBar x:Name="progressBar_Meditation"></ProgressBar>
                                     <Button Click="button_startWorkWithCom_Click" Content="Подключиться"></Button>
                                 </StackPanel>
                             </StackPanel>

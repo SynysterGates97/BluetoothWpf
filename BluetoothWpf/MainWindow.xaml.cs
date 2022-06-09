@@ -35,6 +35,7 @@ namespace BluetoothWpf
         DispatcherTimer _logUpdatetimer;
         DispatcherTimer _btControlTimer;
         DispatcherTimer _csvWriterTimer;
+        DispatcherTimer _comDataUpdateTimer;
 
         private List<NecomimimPacket> necomimimPacketsToCsv;
         private NekomimiCsvWriter _nekomimiCsvWriter;
@@ -68,20 +69,39 @@ namespace BluetoothWpf
             //
             // _necomimiBluetooth = new NecomimiBluetooth(ref _lbLoger);
             
+            _comDataUpdateTimer = new DispatcherTimer();
+            _comDataUpdateTimer.Tick += new EventHandler(ComDataUpdateHandler);
+            _comDataUpdateTimer.Interval = new TimeSpan(0, 0, 1);
+            
+            _comDataUpdateTimer.Start();
+            
         }
 
-        
+        private void ComDataUpdateHandler(object? sender, EventArgs e)
+        {
+            if (_comPortProcessor != null && _comPortProcessor.LastAlphaWavePacket != null)
+            {
+                int attention = _comPortProcessor.LastAlphaWavePacket.Attention;
+                int meditaion = _comPortProcessor.LastAlphaWavePacket.Meditation;
+
+                progressBar_Attention.Value = attention;
+                progressBar_Meditation.Value = meditaion;
+            }
+        }
+
+        private ComPortProcessor _comPortProcessor;
         private void button_startWorkWithCom_Click(object sender, RoutedEventArgs e)
         {
             var comNumberText = textBox_comPortNumber.Text;
             if (comNumberText != "")
             {
+                
                 int portNumber = 0;
                 bool valueIsOk = int.TryParse(comNumberText, out portNumber);
 
                 if (valueIsOk)
                 {
-                    ComPortProcessor comPortProcessor = new ComPortProcessor(portNumber);
+                    _comPortProcessor = new ComPortProcessor(portNumber);
                 }
             }
             else

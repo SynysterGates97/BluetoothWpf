@@ -2,13 +2,13 @@
 
 namespace BluetoothWpf.Models
 {
-    public class AlphaWaveProtocolParser
+    public static class AlphaWaveProtocolParser
     {
         // Regex protcolPattern = "$$CRC8=%d;A=%d;M=%d;#%d;$$"
         private const string _protcolPattern = 
-            @"\$\$CRC8=(?<crc8>\d+?);A=(?<attention>\d+?);M=(?<meditation>\d+?);#(?<packNumber>\d+?);$$";
+            @"\$\$CRC8=(?<crc8>\d+?);A=(?<attention>\d+?);M=(?<meditation>\d+?);#(?<packNumber>\d+?);\$\$";
 
-        public AlphaWavePacket ParsePacketFromString(string receivedPacket)
+        public static AlphaWavePacket ParsePacketFromString(string receivedPacket)
         {
             var matches = Regex.Matches(receivedPacket, _protcolPattern);
             if (matches != null && matches.Count > 0)

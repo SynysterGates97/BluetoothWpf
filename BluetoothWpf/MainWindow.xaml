@@ -1,35 +1,152 @@
 ﻿<mah:MetroWindow x:Class="BluetoothWpf.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:local="clr-namespace:BluetoothWpf"
-        mc:Ignorable="d"
-        Title="Волна V0.2.4" Height="510" Width="873" WindowStyle="SingleBorderWindow">
-    <Grid Background="Azure" RenderTransformOrigin="0.645,0.573">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="263*"/>
-            <ColumnDefinition Width="537*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="66"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <ListBox x:Name="listBox1_btDevices" Margin="10,40,10,39" Grid.Row="1" Grid.Column="1"/>
-        <Button x:Name="button_receive" Content="Начать запись эксперимента" Margin="158,0,158,10" Click="button_receive_Click" Grid.Row="1" Grid.Column="1" Height="25" VerticalAlignment="Bottom" />
-        <Label x:Name="label" Content="Заряд" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="100"/>
-        <Label x:Name="label1" Content="Подключение:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Height="26" Width="90"/>
-        <TextBlock x:Name="textBlock_batteryLevel" Grid.Column="1" HorizontalAlignment="Left" Margin="110,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="76"><Run Language="ru-ru" Text="В разработке"/></TextBlock>
-        <TextBlock x:Name="textBlock_eegConnection" Grid.Column="1" HorizontalAlignment="Left" Margin="110,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="15" Width="120"><Run Language="ru-ru" Text="В разработке"/></TextBlock>
-        <Label x:Name="label2" Content="Введите ФИО испытуемого:" Margin="10,8,10,0" Grid.Row="1" VerticalAlignment="Top" Height="26"/>
-        <Label x:Name="label2_Copy" Content="Ход испытания:" HorizontalAlignment="Left" Margin="10,8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="267" Grid.Column="1" Height="26"/>
-        <TextBox x:Name="textBox_testSubject" Margin="10,39,10,0" Grid.Row="1" TextWrapping="Wrap" Height="26" VerticalAlignment="Top"/>
-        <Button x:Name="button" Content="Задать контекст" Grid.Row="1" VerticalAlignment="Top" Click="button_Click" Margin="91,184,91,0"/>
-        <ComboBox x:Name="comboBox_experimentContext" Margin="10,153,10,0" Grid.Row="1" VerticalAlignment="Top" SelectedIndex="0"/>
-        <Label x:Name="label2_Copy1" Content="Выберите контекст:" Margin="10,122,10,0" Grid.Row="1" VerticalAlignment="Top" Height="26"/>
-        <Button x:Name="button_SetSubjectName" Content="Задать испытуемого" Grid.Row="1" VerticalAlignment="Top" Margin="78,70,77,0" Click="button_SetSubjectName_Click"/>
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 xmlns:local="clr-namespace:BluetoothWpf"
+                 mc:Ignorable="d"
+                 Title="Волна V0.2.4" Height="510" Width="873" WindowStyle="SingleBorderWindow"
+                 Background="PowderBlue">
+    
+    <DockPanel LastChildFill="True">
+        <!-- Верхняя панель статуса -->
+        <Border CornerRadius="0,0,4,4" BorderBrush="Gray" BorderThickness="2,2,2,4" DockPanel.Dock="Top">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0 0" EndPoint="0 1">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0.2" Color="#49B4E8" />
+                        <GradientStop Offset="1.50" Color="Gray" />
+                        <GradientStop Offset="0.1" Color="#49B4E8" />
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Border.Background>
+            <StackPanel x:Name="StatusStackPanel"
+                        Width="Auto"
+                        Orientation="Horizontal"
+                        Margin="10">
 
-    </Grid>
+                <StackPanel Orientation="Vertical"
+                            DockPanel.Dock="Left"
+                            Margin="0,0,5,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Заряд" Grid.Column="1" />
+                        <TextBlock Text="-" VerticalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Подключение" Grid.Column="1" />
+                        <TextBlock Text="Нет" VerticalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Испытуемый" Grid.Column="1" />
+                        <TextBlock Text="-" VerticalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Контекст" Grid.Column="1" />
+                        <TextBlock Text="Нет" VerticalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Левая панель выбора -->
+        <Border CornerRadius="0,0,4,4" BorderBrush="Gray" BorderThickness="2,2,2,4" DockPanel.Dock="Left">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0 0" EndPoint="0 1">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0.001" Color="Azure" />
+                        <GradientStop Offset="2.0" Color="Gray" />
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Border.Background>
+            <StackPanel DockPanel.Dock="Left">
+                <StackPanel>
+                    <Label x:Name="label2" Content="Введите ФИО испытуемого:" Grid.Row="1"
+                           HorizontalAlignment="Center" Margin="10,2,10,2" />
+                    <TextBox x:Name="textBox_testSubject" Margin="10,2,10,2" TextWrapping="Wrap"
+                             VerticalAlignment="Top" />
+                    <Label x:Name="label2_Copy1" Content="Выберите контекст:" Margin="10,2,10,2"
+                           VerticalAlignment="Top" Height="26" />
+                    <ComboBox x:Name="comboBox_experimentContext"
+                              VerticalAlignment="Top" SelectedIndex="0"
+                              Margin="10,2,10,2" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Панель дополнительная -->
+        <Border
+            DockPanel.Dock="Bottom">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0 0" EndPoint="0 1">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0.001" Color="Gray" />
+                        <GradientStop Offset="0.001" Color="White" />
+                        <GradientStop Offset="2.0" Color="Gray" />
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Label HorizontalAlignment="Center" Content="AlphaWave©"></Label>
+        </Border>
+        
+        <!-- Панель выбора экспериментов, опций -->
+        <Border CornerRadius="0,0,4,4" BorderBrush="Gray"
+                BorderThickness="2,2,2,4">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0 0" EndPoint="0 1">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0.001" Color="Azure" />
+                        <GradientStop Offset="2.0" Color="Gray" />
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Border.Background>
+                <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TabItem x:Name="LegacyExperiments">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Height="10" Width="10" Fill="#49B4E8" />
+                                <TextBlock Margin="3" Text="Эксперименты"></TextBlock>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel.Background>#49B4E8</StackPanel.Background>
+                                <Label x:Name="label2_Copy" Content="Ход испытания:" HorizontalAlignment="Left"
+                                       Margin="10,8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="267"
+                                       Grid.Column="1"
+                                       Height="26" />
+                                <DockPanel LastChildFill="True">
+                                    <ListBox Grid.Row="0" x:Name="listBox1_btDevices" Margin="10,40,10,39">
+                                        <ListBox.Background>Black</ListBox.Background>
+                                        <Label Content="Вывод процесса эксперимента"></Label>
+                                    </ListBox>
+                                </DockPanel>
+                                
+                                <Button x:Name="button_receive" Content="Начать запись эксперимента" Margin="158,0,158,10" Grid.Row="1"
+                                        Grid.Column="1" Height="25" VerticalAlignment="Bottom" />
+                            </StackPanel>
+                        </TabItem.Content>
+                    </TabItem>
+                    <TabItem x:Name="New">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Height="10" Width="10" Fill="#49B4E8" />
+                                <TextBlock Margin="3">Оценка учебного материала</TextBlock>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <StackPanel>
+                                <StackPanel.Background>#49B4E8</StackPanel.Background>
+                                <Label>"Вью модель"</Label>
+                            </StackPanel>
+                        </TabItem.Content>
+                    </TabItem>
+                </TabControl>
+        </Border>
+
+    </DockPanel>
 </mah:MetroWindow>

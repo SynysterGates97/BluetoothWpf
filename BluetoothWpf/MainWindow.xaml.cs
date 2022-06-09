@@ -41,31 +41,31 @@ namespace BluetoothWpf
         public MainWindow()
         {
             InitializeComponent();
-            _listOfLogMessages = new List<string>();
-            _lbLoger = new LbLoger();
-
-            necomimimPacketsToCsv = new List<NecomimimPacket>();
-
-            _logUpdatetimer = new DispatcherTimer();
-            _logUpdatetimer.Tick += new EventHandler(LogUpdateTimerCallback);
-            _logUpdatetimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
-
-            _btControlTimer = new DispatcherTimer();
-            _btControlTimer.Tick += new EventHandler(CheckBtConnectionCallback);
-            _btControlTimer.Interval = new TimeSpan(0, 0, 5);
-
-            _csvWriterTimer = new DispatcherTimer();
-            _csvWriterTimer.Tick += new EventHandler(CsvWriteTimerCallback);
-            _csvWriterTimer.Interval = new TimeSpan(0, 0, 1);
-
-            _nekomimiCsvWriter = new NekomimiCsvWriter();
-            FillContexts();
-
-            _btControlTimer.Start();
-
-            _lbLoger.PropertyChanged += _lbLoger_PropertyChanged;
-
-            _necomimiBluetooth = new NecomimiBluetooth(ref _lbLoger);
+            // _listOfLogMessages = new List<string>();
+            // _lbLoger = new LbLoger();
+            //
+            // necomimimPacketsToCsv = new List<NecomimimPacket>();
+            //
+            // _logUpdatetimer = new DispatcherTimer();
+            // _logUpdatetimer.Tick += new EventHandler(LogUpdateTimerCallback);
+            // _logUpdatetimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            //
+            // _btControlTimer = new DispatcherTimer();
+            // _btControlTimer.Tick += new EventHandler(CheckBtConnectionCallback);
+            // _btControlTimer.Interval = new TimeSpan(0, 0, 5);
+            //
+            // _csvWriterTimer = new DispatcherTimer();
+            // _csvWriterTimer.Tick += new EventHandler(CsvWriteTimerCallback);
+            // _csvWriterTimer.Interval = new TimeSpan(0, 0, 1);
+            //
+            // _nekomimiCsvWriter = new NekomimiCsvWriter();
+            // FillContexts();
+            //
+            // _btControlTimer.Start();
+            //
+            // _lbLoger.PropertyChanged += _lbLoger_PropertyChanged;
+            //
+            // _necomimiBluetooth = new NecomimiBluetooth(ref _lbLoger);
         }
 
         private void FillContexts()

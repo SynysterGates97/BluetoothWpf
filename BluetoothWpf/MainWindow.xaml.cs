@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -74,7 +75,26 @@ namespace BluetoothWpf
             _comDataUpdateTimer.Interval = new TimeSpan(0, 0, 1);
             
             _comDataUpdateTimer.Start();
+
+            string presentationPath = @"D:\slides.pptx";
+            var application = new Microsoft.Office.Interop.PowerPoint.ApplicationClass();
+
+            var ppApp = application.Presentations.Open(presentationPath);
+
+            ppApp.SlideShowSettings.Run();
+
+            var slidesCount = ppApp.Slides.Count;
             
+            Thread.Sleep(2000);
+            ppApp.SlideShowWindow.View.Next();
+            
+            Thread.Sleep(2000);
+            ppApp.SlideShowWindow.View.Next();
+            
+            Thread.Sleep(2000);
+            ppApp.SlideShowWindow.View.Next();
+            
+
         }
 
         private void ComDataUpdateHandler(object? sender, EventArgs e)

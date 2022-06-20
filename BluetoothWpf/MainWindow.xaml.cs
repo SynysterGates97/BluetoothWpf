@@ -97,8 +97,8 @@ namespace BluetoothWpf
 
             FuzzyLogicExample fuzzyLogicExample = new FuzzyLogicExample();
 
-            int proc = fuzzyLogicExample.FuzzyLogic(4, 7);
-            MessageBox.Show(proc.ToString());
+            int velocity = fuzzyLogicExample.FuzzyLogic(10, 10, 0);
+            MessageBox.Show(velocity.ToString());
 
 
         }

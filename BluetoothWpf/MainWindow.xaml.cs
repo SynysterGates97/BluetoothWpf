@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using BluetoothWpf.Models;
 using BluetoothWpf.Models.ComPort;
 using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
@@ -76,24 +77,29 @@ namespace BluetoothWpf
             
             _comDataUpdateTimer.Start();
 
-            string presentationPath = @"D:\slides.pptx";
-            var application = new Microsoft.Office.Interop.PowerPoint.ApplicationClass();
+            // string presentationPath = @"D:\slides.pptx";
+            // var application = new Microsoft.Office.Interop.PowerPoint.ApplicationClass();
+            //
+            // var ppApp = application.Presentations.Open(presentationPath);
+            //
+            // ppApp.SlideShowSettings.Run();
+            //
+            // var slidesCount = ppApp.Slides.Count;
+            //
+            // Thread.Sleep(2000);
+            // ppApp.SlideShowWindow.View.Next();
+            //
+            // Thread.Sleep(2000);
+            // ppApp.SlideShowWindow.View.Next();
+            //
+            // Thread.Sleep(2000);
+            // ppApp.SlideShowWindow.View.Next();
 
-            var ppApp = application.Presentations.Open(presentationPath);
+            FuzzyLogicExample fuzzyLogicExample = new FuzzyLogicExample();
 
-            ppApp.SlideShowSettings.Run();
+            int proc = fuzzyLogicExample.FuzzyLogic(4, 7);
+            MessageBox.Show(proc.ToString());
 
-            var slidesCount = ppApp.Slides.Count;
-            
-            Thread.Sleep(2000);
-            ppApp.SlideShowWindow.View.Next();
-            
-            Thread.Sleep(2000);
-            ppApp.SlideShowWindow.View.Next();
-            
-            Thread.Sleep(2000);
-            ppApp.SlideShowWindow.View.Next();
-            
 
         }
 

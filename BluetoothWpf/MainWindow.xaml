@@ -31,23 +31,23 @@
                             DockPanel.Dock="Left"
                             Margin="0,0,5,0">
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Заряд" Grid.Column="1" />
-                        <TextBlock Text="-" VerticalAlignment="Center"></TextBlock>
+                        <Label Content="Заряд" Grid.Column="1" Foreground="White"/>
+                        <TextBlock Text="-" VerticalAlignment="Center" Foreground="White"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Подключение" Grid.Column="1" />
-                        <TextBlock Text="Нет" VerticalAlignment="Center"></TextBlock>
+                        <Label Content="Подключение" Grid.Column="1" Foreground="White"/>
+                        <TextBlock Text="Нет" VerticalAlignment="Center" Foreground="White"></TextBlock>
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Испытуемый" Grid.Column="1" />
-                        <TextBlock Text="-" VerticalAlignment="Center"></TextBlock>
+                        <Label Content="Испытуемый" Grid.Column="1" Foreground="White"/>
+                        <TextBlock Text="-" VerticalAlignment="Center" Foreground="White"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Контекст" Grid.Column="1" />
-                        <TextBlock Text="Нет" VerticalAlignment="Center"></TextBlock>
+                        <Label Content="Контекст" Grid.Column="1" Foreground="White"/>
+                        <TextBlock Text="Нет" VerticalAlignment="Center" Foreground="White"></TextBlock>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

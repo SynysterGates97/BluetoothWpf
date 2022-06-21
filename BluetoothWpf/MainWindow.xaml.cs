@@ -77,29 +77,12 @@ namespace BluetoothWpf
             
             _comDataUpdateTimer.Start();
 
-            // string presentationPath = @"D:\slides.pptx";
-            // var application = new Microsoft.Office.Interop.PowerPoint.ApplicationClass();
-            //
-            // var ppApp = application.Presentations.Open(presentationPath);
-            //
-            // ppApp.SlideShowSettings.Run();
-            //
-            // var slidesCount = ppApp.Slides.Count;
-            //
-            // Thread.Sleep(2000);
-            // ppApp.SlideShowWindow.View.Next();
-            //
-            // Thread.Sleep(2000);
-            // ppApp.SlideShowWindow.View.Next();
-            //
-            // Thread.Sleep(2000);
-            // ppApp.SlideShowWindow.View.Next();
-
             FuzzyLogicExample fuzzyLogicExample = new FuzzyLogicExample();
 
             int velocity = fuzzyLogicExample.FuzzyLogic(0, 0, 10);
-            MessageBox.Show(velocity.ToString());
+            // MessageBox.Show(velocity.ToString());
 
+            presetationPath_TextBox.Drop += UIElement_OnDrop;
 
         }
 
@@ -246,5 +229,53 @@ namespace BluetoothWpf
             }
         }
 
+        private void UIElement_OnDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                // Note that you can have more than one file.
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                if (files?.Count() != 0)
+                {
+                    string presentationPath = files[0];
+
+                    presetationPath_TextBox.Text = files[0];
+
+                }
+
+            }
+        }
+
+        private void ButtonStartPresentation_OnClick(object sender, RoutedEventArgs e)
+        {
+            string presentationPath = presetationPath_TextBox.Text;
+
+            if (presentationPath != null)
+            {
+                var application = new Microsoft.Office.Interop.PowerPoint.ApplicationClass();
+
+                var ppApp = application.Presentations.Open(presentationPath);
+
+                ppApp.SlideShowSettings.Run();
+
+                var slidesCount = ppApp.Slides.Count;
+
+                Thread.Sleep(2000);
+                ppApp.SlideShowWindow.View.Next();
+
+                Thread.Sleep(2000);
+                ppApp.SlideShowWindow.View.Next();
+
+                Thread.Sleep(2000);
+                ppApp.SlideShowWindow.View.Next();
+
+                foreach (var slide in ppApp.Slides)
+                {
+                    Thread.Sleep(2000);
+                    ppApp.SlideShowWindow.View.Next();
+                }
+            }
+        }
     }
 }

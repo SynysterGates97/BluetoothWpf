@@ -104,7 +104,10 @@
                     </LinearGradientBrush.GradientStops>
                 </LinearGradientBrush>
             </Border.Background>
-                <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Drop="UIElement_OnDrop"
+                            AllowDrop="True">
+                    
                     <TabItem x:Name="New">
                         <TabItem.Header>
                             <StackPanel Orientation="Horizontal">
@@ -113,12 +116,15 @@
                             </StackPanel>
                         </TabItem.Header>
                         <TabItem.Content>
-                            <StackPanel>
+                            <StackPanel Orientation="Horizontal">
                                 <StackPanel.Background>#49B4E8</StackPanel.Background>
-                                <Label>"Вью модель"</Label>
-                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                                <StackPanel Orientation="Vertical" 
+                                            HorizontalAlignment="Left"
+                                            Margin="10">
                                     <Label Content="Задайте номер COM-порта"/>
-                                    <TextBox x:Name="textBox_comPortNumber"></TextBox>
+                                    <TextBox x:Name="textBox_comPortNumber" Margin="2,0,2,10">
+                                        
+                                    </TextBox>
                                     <Button Click="button_startWorkWithCom_Click" Content="Подключиться"></Button>
                                     
                                     <StackPanel>
@@ -129,7 +135,28 @@
                                         <Label Content="Уровень концентрации:"/>
                                         <ProgressBar x:Name="progressBar_Meditation"></ProgressBar>
                                     </StackPanel>
-                                    
+                                    <StackPanel>
+                                        <Label Content="Скорость показа слайдов:"/>
+                                        <ProgressBar x:Name="progressBar_Velocity"></ProgressBar>
+                                    </StackPanel>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Vertical" 
+                                            HorizontalAlignment="Left"
+                                            Margin="10">
+                                    <TextBox x:Name="presetationPath_TextBox"
+                                             Margin="2,0,2,10">
+                                        
+                                    </TextBox>
+                                    <Button Content="Открыть файл презентации"
+                                            Margin="2">
+                                        <!-- <Button></Button> -->
+                                    </Button>
+                                    <Button Content="Запустить презентацию" 
+                                            Margin="2"
+                                            Click="ButtonStartPresentation_OnClick">
+                                        <!-- <Button></Button> -->
+                                    </Button>
                                 </StackPanel>
                             </StackPanel>
                         </TabItem.Content>

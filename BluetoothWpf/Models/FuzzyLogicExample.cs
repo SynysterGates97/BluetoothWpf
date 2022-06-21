@@ -44,6 +44,11 @@
         //     {0.000f, 0.000f, 0.000f, 0.000f, 0.000f, 0.000f, 0.000f, 0.000f, 0.000f, 0.000f, 0.000f}    // холерик
         // };
 
+        public int GetOutTermDiscretenes()
+        {
+            return NUMBER_OF_POINT_OUT;
+        }
+
         private float[,] _slideVelocityMemberFunc = new float[MAX_RULE_NUMBER, NUMBER_OF_POINT_OUT]
         {
             {

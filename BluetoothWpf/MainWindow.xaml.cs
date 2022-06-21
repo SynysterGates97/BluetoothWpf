@@ -86,8 +86,13 @@ namespace BluetoothWpf
 
         }
 
+        private int _currentSlideDelaySec = 60; 
+
         private void ComDataUpdateHandler(object? sender, EventArgs e)
         {
+            var temperament = (int)Temperament_Slider.Value;
+            var age = (int)Age_Slider.Value;
+            
             if (_comPortProcessor != null && _comPortProcessor.LastAlphaWavePacket != null)
             {
                 int attention = _comPortProcessor.LastAlphaWavePacket.Attention;
@@ -95,6 +100,30 @@ namespace BluetoothWpf
 
                 progressBar_Attention.Value = attention;
                 progressBar_Meditation.Value = meditaion;
+                
+                FuzzyLogicExample fuzzyLogic = new FuzzyLogicExample();
+
+                var velocityTerm = fuzzyLogic.FuzzyLogic(age, temperament, attention / 10);
+
+                int velocityInProcent = velocityTerm / fuzzyLogic.GetOutTermDiscretenes() * 100;
+                progressBar_Velocity.Value = velocityInProcent;
+
+                if (velocityInProcent <= 25)
+                {
+                    _currentSlideDelaySec = 150;
+                }
+                else if (velocityInProcent <= 50)
+                {
+                    _currentSlideDelaySec = 120;
+                }
+                else if (velocityInProcent <= 75)
+                {
+                    _currentSlideDelaySec = 90;
+                }
+                else if (velocityInProcent <= 100)
+                {
+                    _currentSlideDelaySec = 60;
+                }
             }
         }
 
@@ -261,18 +290,9 @@ namespace BluetoothWpf
 
                 var slidesCount = ppApp.Slides.Count;
 
-                Thread.Sleep(2000);
-                ppApp.SlideShowWindow.View.Next();
-
-                Thread.Sleep(2000);
-                ppApp.SlideShowWindow.View.Next();
-
-                Thread.Sleep(2000);
-                ppApp.SlideShowWindow.View.Next();
-
                 foreach (var slide in ppApp.Slides)
                 {
-                    Thread.Sleep(2000);
+                    Thread.Sleep(_currentSlideDelaySec * 1000);
                     ppApp.SlideShowWindow.View.Next();
                 }
             }

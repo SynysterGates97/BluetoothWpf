@@ -141,6 +141,7 @@
                                     </StackPanel>
                                 </StackPanel>
                                 
+                                <!-- Настройки презентации -->
                                 <StackPanel Orientation="Vertical" 
                                             HorizontalAlignment="Left"
                                             Margin="10">
@@ -157,6 +158,40 @@
                                             Click="ButtonStartPresentation_OnClick">
                                         <!-- <Button></Button> -->
                                     </Button>
+                                </StackPanel>
+                                
+                                <!-- Настройки переменных для модели нечеткой логики -->
+                                <StackPanel Orientation="Vertical" 
+                                            HorizontalAlignment="Left"
+                                            Margin="10">
+                                    
+                                    <Label Content="Задание характеристик пользователя"
+                                           Margin="0,0,0,10"></Label>
+                                    
+                                    <Label Content="Возраст: юный - пожилой"></Label>
+                                    <Slider x:Name="Age_Slider"
+                                            Value="0"
+                                            Minimum="0"
+                                            Maximum="11"
+                                            TickFrequency="1"
+                                            TickPlacement="BottomRight"
+                                            IsSnapToTickEnabled="True"
+                                            Margin="0,0,0,10">
+                                    </Slider>
+                                    
+                                    <Label Content="Темперамент: сангвиник - холерик"></Label>
+                                    <Slider x:Name="Temperament_Slider"
+                                            Margin="0,0,0,20"
+                                            Value="0"
+                                            Minimum="0"
+                                            Maximum="10"
+                                            TickFrequency="1"
+                                            TickPlacement="BottomRight"
+                                            IsSnapToTickEnabled="True">
+                                    </Slider>
+                                    
+                                    <Button Content="Загрузить файл настроек .xls"></Button>
+                                    
                                 </StackPanel>
                             </StackPanel>
                         </TabItem.Content>

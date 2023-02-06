@@ -112,7 +112,7 @@ namespace BluetoothWpf
                         if (NecomimiPacketParser.Parse(readBuffer, byteInBufCounter, ref necomimimPackets) > 0)
                         {
                             //_lbLoger.Print(necomimimPackets.Count.ToString());
-                            Task.Delay(5);
+                            //Task.Delay(5);
                         }
                     }
                     //TODO: необходима буферизация, парсер должен возвращать количество разобранных байт

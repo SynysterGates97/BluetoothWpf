@@ -9,6 +9,11 @@ namespace BluetoothWpf
 {
     public class NecomimiPacketParser
     {
+        private const int PARSE_BUFF_SIZE = 5120;
+        static private byte[] _parseBuff = new byte[PARSE_BUFF_SIZE];
+        static private byte[] _transferBuff = new byte[PARSE_BUFF_SIZE];
+
+        static private int _parsingBytesCount = 0;
         enum ParsingResult
         {
             PARSED_OK,
@@ -73,9 +78,39 @@ namespace BluetoothWpf
             return -1;
         }
 
+        static private void BufferizePacket(byte[] rxBuf, int bufLen)
+        {
+            if (bufLen + _parsingBytesCount <= PARSE_BUFF_SIZE)
+            {
+                System.Array.Copy(rxBuf, 0, _parseBuff, _parsingBytesCount, bufLen);
+                _parsingBytesCount += bufLen;
+            }
+
+        }
+
+        static public int Parse(byte[] rxBuf, int bufLen, ref ConcurrentQueue<NecomimimPacket> necomimimPacketsQueue)
+        {
+            BufferizePacket(rxBuf, bufLen);
+
+            int parsingBytesCountBeforeParsing = _parsingBytesCount;
+
+            var parseResult = _Parse(_parseBuff, bufLen, ref necomimimPacketsQueue);
+
+            int parsedUpToIndex = parseResult.Item1;
+            int parsedValuesCount = parseResult.Item2;
+
+            System.Array.Copy(_parseBuff, _transferBuff, PARSE_BUFF_SIZE);
+            System.Array.Copy(_transferBuff, parsedUpToIndex, _parseBuff, 0, parsingBytesCountBeforeParsing - parsedUpToIndex);
+
+            _parsingBytesCount = parsingBytesCountBeforeParsing - parsedUpToIndex;
+
+             return parsedValuesCount;
+        }
+
+
         static int attentionCount = 0;
         //на вход подается Массив байт размером bufLen : 
-        static public int Parse(byte[] rxBuf, int bufLen, ref ConcurrentQueue<NecomimimPacket> necomimimPacketsQueue)
+        static private Tuple<int,int> _Parse(byte[] rxBuf, int bufLen, ref ConcurrentQueue<NecomimimPacket> necomimimPacketsQueue)
         {
             //минимальный размер пакета по факту -  6 байт
             int parsingIndex = 0;
@@ -227,10 +262,11 @@ namespace BluetoothWpf
                     parsingIndex++;
                 }
             }
+
             if (newParsedValues > 0)
-                return newParsedValues;
+                return new Tuple<int,int>(parsingIndex, newParsedValues);
             else
-                return -1;
+                return new Tuple<int, int>(parsingIndex, -1);
         }
 
     }

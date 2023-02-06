@@ -45,32 +45,33 @@ namespace BluetoothWpf
         public MainWindow()
         {
             InitializeComponent();
-            // _listOfLogMessages = new List<string>();
-            // _lbLoger = new LbLoger();
-            //
-            // necomimimPacketsToCsv = new List<NecomimimPacket>();
-            //
-            // _logUpdatetimer = new DispatcherTimer();
-            // _logUpdatetimer.Tick += new EventHandler(LogUpdateTimerCallback);
-            // _logUpdatetimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
-            //
-            // _btControlTimer = new DispatcherTimer();
-            // _btControlTimer.Tick += new EventHandler(CheckBtConnectionCallback);
-            // _btControlTimer.Interval = new TimeSpan(0, 0, 5);
-            //
-            // _csvWriterTimer = new DispatcherTimer();
-            // _csvWriterTimer.Tick += new EventHandler(CsvWriteTimerCallback);
-            // _csvWriterTimer.Interval = new TimeSpan(0, 0, 1);
-            //
-            // _nekomimiCsvWriter = new NekomimiCsvWriter();
-            // FillContexts();
-            //
-            // _btControlTimer.Start();
-            //
-            // _lbLoger.PropertyChanged += _lbLoger_PropertyChanged;
-            //
-            // _necomimiBluetooth = new NecomimiBluetooth(ref _lbLoger);
-            
+
+            _listOfLogMessages = new List<string>();
+            _lbLoger = new LbLoger();
+
+            necomimimPacketsToCsv = new List<NecomimimPacket>();
+
+            _logUpdatetimer = new DispatcherTimer();
+            _logUpdatetimer.Tick += new EventHandler(LogUpdateTimerCallback);
+            _logUpdatetimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+
+            _btControlTimer = new DispatcherTimer();
+            _btControlTimer.Tick += new EventHandler(CheckBtConnectionCallback);
+            _btControlTimer.Interval = new TimeSpan(0, 0, 5);
+
+            _csvWriterTimer = new DispatcherTimer();
+            _csvWriterTimer.Tick += new EventHandler(CsvWriteTimerCallback);
+            _csvWriterTimer.Interval = new TimeSpan(0, 0, 1);
+
+            _nekomimiCsvWriter = new NekomimiCsvWriter();
+            FillContexts();
+
+            _btControlTimer.Start();
+
+            _lbLoger.PropertyChanged += _lbLoger_PropertyChanged;
+
+            _necomimiBluetooth = new NecomimiBluetooth(ref _lbLoger);
+
             _comDataUpdateTimer = new DispatcherTimer();
             _comDataUpdateTimer.Tick += new EventHandler(ComDataUpdateHandler);
             _comDataUpdateTimer.Interval = new TimeSpan(0, 0, 1);
@@ -197,7 +198,7 @@ namespace BluetoothWpf
 
             _lbLoger.Flush(ref _listOfLogMessages);
 
-            if(listBox1_btDevices.Items.Count >= 50)
+            if(listBox1_btDevices.Items.Count >= 10)
             {
                 listBox1_btDevices.Items.Clear();
             }

@@ -107,8 +107,36 @@
                 <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                             Drop="UIElement_OnDrop"
                             AllowDrop="True">
-                    
-                    <TabItem x:Name="New">
+                <TabItem x:Name="LegacyExperiments">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Height="10" Width="10" Fill="#49B4E8" />
+                            <TextBlock Margin="3" Text="Эксперименты"></TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <TabItem.Content>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel.Background>#49B4E8</StackPanel.Background>
+                            <Label x:Name="label2_Copy" Content="Ход испытания:" HorizontalAlignment="Left"
+                                       Margin="10,8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="267"
+                                       Grid.Column="1"
+                                       Height="26" />
+                            <DockPanel LastChildFill="True">
+                                <ListBox Grid.Row="0" x:Name="listBox1_btDevices" Margin="10,40,10,39"
+                                         MinHeight="200"
+                                         Height="Auto"
+                                         ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                    <ListBox.Background>Black</ListBox.Background>
+                                    <Label Content="Вывод процесса эксперимента"></Label>
+                                </ListBox>
+                            </DockPanel>
+
+                            <Button x:Name="button_receive" Content="Начать запись эксперимента" Margin="158,0,158,10" Grid.Row="1"
+                                        Grid.Column="1" Height="25" VerticalAlignment="Bottom" Click="button_receive_Click" />
+                        </StackPanel>
+                    </TabItem.Content>
+                </TabItem>
+                <TabItem x:Name="New">
                         <TabItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <Ellipse Height="10" Width="10" Fill="#49B4E8" />
@@ -196,32 +224,7 @@
                             </StackPanel>
                         </TabItem.Content>
                     </TabItem>
-                    <TabItem x:Name="LegacyExperiments">
-                        <TabItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <Ellipse Height="10" Width="10" Fill="#49B4E8" />
-                                <TextBlock Margin="3" Text="Эксперименты"></TextBlock>
-                            </StackPanel>
-                        </TabItem.Header>
-                        <TabItem.Content>
-                            <StackPanel Orientation="Vertical">
-                                <StackPanel.Background>#49B4E8</StackPanel.Background>
-                                <Label x:Name="label2_Copy" Content="Ход испытания:" HorizontalAlignment="Left"
-                                       Margin="10,8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="267"
-                                       Grid.Column="1"
-                                       Height="26" />
-                                <DockPanel LastChildFill="True">
-                                    <ListBox Grid.Row="0" x:Name="listBox1_btDevices" Margin="10,40,10,39">
-                                        <ListBox.Background>Black</ListBox.Background>
-                                        <Label Content="Вывод процесса эксперимента"></Label>
-                                    </ListBox>
-                                </DockPanel>
-                                
-                                <Button x:Name="button_receive" Content="Начать запись эксперимента" Margin="158,0,158,10" Grid.Row="1"
-                                        Grid.Column="1" Height="25" VerticalAlignment="Bottom" />
-                            </StackPanel>
-                        </TabItem.Content>
-                    </TabItem>
+                    
                 </TabControl>
         </Border>
 

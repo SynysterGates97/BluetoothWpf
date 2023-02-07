@@ -115,7 +115,7 @@ namespace BluetoothWpf
                             //Task.Delay(5);
                         }
                     }
-                    //TODO: необходима буферизация, парсер должен возвращать количество разобранных байт
+
                     byteInBufCounter = 0;
                 }
                 catch(Exception ex)

@@ -102,7 +102,8 @@ namespace BluetoothWpf
             var currentTime = DateTime.Now;
             TimeSpan relativeTimeSpan = currentTime - ExperimentContext.LastExperimentBeginTime;
             _parsedTime = $"{currentTime}:{currentTime.Millisecond}";
-            _parseTimeRelativeMinutes = $"{relativeTimeSpan.TotalHours}:{relativeTimeSpan.TotalMinutes};{relativeTimeSpan.TotalSeconds}";
+
+            _parseTimeRelativeMinutes = $"{(int)(relativeTimeSpan.TotalSeconds / 60)}:{(int)relativeTimeSpan.TotalSeconds % 60}";
 
             EegPower = new byte[32];
             AsicEegPower = new byte[24];

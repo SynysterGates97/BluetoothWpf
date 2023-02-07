@@ -43,11 +43,11 @@
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Испытуемый" Grid.Column="1" Foreground="White"/>
-                        <TextBlock Text="-" VerticalAlignment="Center" Foreground="White"></TextBlock>
+                        <TextBlock x:Name="HeaderNameOfTesterTextBlock" Text="-" VerticalAlignment="Center" Foreground="White"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Контекст" Grid.Column="1" Foreground="White"/>
-                        <TextBlock Text="Нет" VerticalAlignment="Center" Foreground="White"></TextBlock>
+                        <TextBlock x:Name="HeaderContextTextBlock" Text="Нет" VerticalAlignment="Center" Foreground="White"></TextBlock>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -73,7 +73,7 @@
                            VerticalAlignment="Top" Height="26" />
                     <ComboBox x:Name="comboBox_experimentContext"
                               VerticalAlignment="Top" SelectedIndex="0"
-                              Margin="10,2,10,2" />
+                              Margin="10,2,10,2" SelectionChanged="comboBox_experimentContext_SelectionChanged" />
                 </StackPanel>
             </StackPanel>
         </Border>

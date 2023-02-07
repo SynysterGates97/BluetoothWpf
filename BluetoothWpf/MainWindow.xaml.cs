@@ -168,7 +168,7 @@ namespace BluetoothWpf
         {
             necomimimPacketsToCsv.Clear();
             // 1 pack per 7.5 ms = 133 packs per second
-            int dequedPacks = _necomimiBluetooth.GetNLastParsedPacketsFromQueue(600, ref necomimimPacketsToCsv);
+            int dequedPacks = _necomimiBluetooth.GetNLastParsedPacketsFromQueue(1000, ref necomimimPacketsToCsv);
 
             int writenPacks = _nekomimiCsvWriter.TryWritePacketsToCsv(ref necomimimPacketsToCsv);
 
@@ -230,6 +230,8 @@ namespace BluetoothWpf
                     _nekomimiCsvWriter.WriteHeader();
                     ExperimentContext.CurrentContext = comboBox_experimentContext.Text;
                     ExperimentContext.TestSubjectName = textBox_testSubject.Text;
+
+                    HeaderNameOfTesterTextBlock.Text = ExperimentContext.TestSubjectName;
                 }
 
                 _necomimiBluetooth.Receive();                
@@ -259,6 +261,7 @@ namespace BluetoothWpf
                     _nekomimiCsvWriter.WriteHeader();
                     ExperimentContext.CurrentContext = comboBox_experimentContext.Text;
                     ExperimentContext.TestSubjectName = textBox_testSubject.Text ?? "Поле ФИО пустое";
+
                 }
             }
             else
@@ -305,6 +308,23 @@ namespace BluetoothWpf
                     ppApp.SlideShowWindow.View.Next();
                 }
             }
+        }
+
+        private void comboBox_experimentContext_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                string contextString = e.AddedItems[0] as string;
+
+                if (contextString != null)
+                    ExperimentContext.CurrentContext = contextString;
+
+                ExperimentContext.LastExperimentBeginTime = DateTime.Now;
+
+                HeaderContextTextBlock.Text = contextString; 
+
+            }
+            
         }
     }
 }

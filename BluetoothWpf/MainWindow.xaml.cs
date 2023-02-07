@@ -224,6 +224,14 @@ namespace BluetoothWpf
         {
             if (textBox_testSubject.Text != "")
             {
+                if (_nekomimiCsvWriter.FileName != textBox_testSubject.Text)
+                {
+                    _nekomimiCsvWriter.FileName = textBox_testSubject.Text;
+                    _nekomimiCsvWriter.WriteHeader();
+                    ExperimentContext.CurrentContext = comboBox_experimentContext.Text;
+                    ExperimentContext.TestSubjectName = textBox_testSubject.Text;
+                }
+
                 _necomimiBluetooth.Receive();                
                 _csvWriterTimer.Start();
             }

@@ -94,7 +94,7 @@ namespace BluetoothWpf
 
             int parsingBytesCountBeforeParsing = _parsingBytesCount;
 
-            var parseResult = _Parse(_parseBuff, bufLen, ref necomimimPacketsQueue);
+            var parseResult = _Parse(_parseBuff, _parsingBytesCount, ref necomimimPacketsQueue);
 
             int parsedUpToIndex = parseResult.Item1;
             int parsedValuesCount = parseResult.Item2;
